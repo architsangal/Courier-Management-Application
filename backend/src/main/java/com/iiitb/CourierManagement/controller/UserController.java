@@ -7,6 +7,7 @@ import com.iiitb.CourierManagement.entity.User;
 import com.iiitb.CourierManagement.service.UserService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @RestController
+@CrossOrigin
 public class UserController {
     @Autowired
     private UserService userService;
