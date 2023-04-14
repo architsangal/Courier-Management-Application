@@ -15,4 +15,48 @@ public class CourierService {
         courier.setStatus("ACTIVE");
         return courierDao.save(courier);
     }
+
+    public Courier updateCourier(Courier courier) {
+        if(courier!=null) {
+            Courier cour = courierDao.findById(courier.getCourierID()).get();
+            if(courier.getOwner()!=null) {
+                cour.setOwner(courier.getOwner());
+            }
+
+            if(courier.getArrivalDate() !=null) {
+                cour.setArrivalDate(courier.getArrivalDate());
+            }
+
+            if(courier.getArrivalTime()!=null) {
+                cour.setArrivalTime(courier.getArrivalTime());
+            }
+
+            if(courier.getOwnerRollNo()!=null) {
+                cour.setOwnerRollNo(courier.getOwnerRollNo());
+            }
+
+            if(courier.getReceiverName()!=null) {
+                cour.setReceiverName(courier.getReceiverName());
+            }
+
+            if(courier.getReceiverRollNo()!=null) {
+                cour.setReceiverRollNo(courier.getReceiverRollNo());
+            }
+
+            if(courier.getDeliverDate()!=null) {
+                cour.setDeliverDate(courier.getDeliverDate());
+            }
+
+            if(courier.getDeliverTime()!=null) {
+                cour.setDeliverTime(courier.getDeliverTime());
+            }
+
+            if(courier.getStatus()!=null) {
+                cour.setStatus(courier.getStatus());
+            }
+            return courierDao.save(cour);
+
+        }
+        return courierDao.save(courier);
+    }
 }

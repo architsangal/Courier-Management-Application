@@ -18,4 +18,10 @@ public class CourierController {
     public Courier addCourier(@RequestBody Courier courier) {
         return courierService.addCourier(courier);
     }
+
+    @PostMapping({"/updateCourier"})
+    @PreAuthorize("hasRole('Admin')")
+    public Courier updateCourier(@RequestBody Courier courier) {
+        return courierService.updateCourier(courier);
+    }
 }
