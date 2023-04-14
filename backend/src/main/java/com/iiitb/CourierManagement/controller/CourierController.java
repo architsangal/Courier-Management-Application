@@ -36,10 +36,16 @@ public class CourierController {
         courierService.deleteCourier(courier);
     }
 
-    @PostMapping({"/getMyCouriers"})
+    @GetMapping({"/getMyCouriers"})
     @PreAuthorize("hasRole('User')")
     public Set<Courier> getMyCouriers(HttpServletRequest request) {
         String jwtToken = request.getHeader("Authorization").substring(7);
         return courierService.getMyCouriers(jwtToken);
+    }
+
+    @GetMapping({"/getAllCouriers"})
+    @PreAuthorize("hasRole('User') or hasRole('Admin')")
+    public Set<Courier> getAllCouriers(HttpServletRequest request) {
+        return courierService.getAllCouriers();
     }
 }

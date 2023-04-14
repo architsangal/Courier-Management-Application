@@ -6,6 +6,7 @@ import com.iiitb.CourierManagement.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -74,5 +75,11 @@ public class CourierService {
     public Set<Courier> getMyCouriers(String jwtToken) {
         String rollNo = jwtUtil.getUsernameFromToken(jwtToken);
         return courierDao.findByOwnerRollNo(rollNo);
+    }
+
+    public Set<Courier> getAllCouriers() {
+        Set<Courier> couriers = new HashSet<>();
+        courierDao.findAll().forEach(couriers::add);
+        return couriers;
     }
 }
