@@ -48,4 +48,11 @@ public class CourierController {
     public Set<Courier> getAllCouriers(HttpServletRequest request) {
         return courierService.getAllCouriers();
     }
+
+    @GetMapping({"/getCouriersByRollNo"})
+    @PreAuthorize("hasRole('Admin')")
+    public Set<Courier> getCouriersByRollNo(@RequestBody Courier courier) {
+        return courierService.getCouriersByRollNo(courier.getOwnerRollNo());
+    }
+
 }

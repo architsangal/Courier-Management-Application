@@ -82,4 +82,9 @@ public class CourierService {
         courierDao.findAll().forEach(couriers::add);
         return couriers;
     }
+
+    public Set<Courier> getCouriersByRollNo(String rollNo) {
+        Set<Courier> couriers = new HashSet<>();
+        return courierDao.findByOwnerRollNo(rollNo);
+    }
 }
