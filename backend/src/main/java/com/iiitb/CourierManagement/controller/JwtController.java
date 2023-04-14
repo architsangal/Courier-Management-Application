@@ -3,6 +3,7 @@ package com.iiitb.CourierManagement.controller;
 import com.iiitb.CourierManagement.entity.JwtRequest;
 import com.iiitb.CourierManagement.entity.JwtResponse;
 import com.iiitb.CourierManagement.service.JwtService;
+import com.iiitb.CourierManagement.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;

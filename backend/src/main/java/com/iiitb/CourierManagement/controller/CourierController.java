@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
+
 @RestController
 @CrossOrigin
 public class CourierController {
@@ -27,7 +30,16 @@ public class CourierController {
 
     @PostMapping({"/deleteCourier"})
     @PreAuthorize("hasRole('Admin')")
-    public void deleteCourier(@RequestBody Courier courier) {
+    public void deleteCourier(@RequestBody Courier courier, HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+        System.out.println(header);
         courierService.deleteCourier(courier);
+    }
+
+    @PostMapping({"/getMyCouriers"})
+    @PreAuthorize("hasRole('User')")
+    public Set<Courier> getMyCouriers(HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        return courierService.getMyCouriers(jwtToken);
     }
 }

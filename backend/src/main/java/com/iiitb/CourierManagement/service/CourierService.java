@@ -2,14 +2,20 @@ package com.iiitb.CourierManagement.service;
 
 import com.iiitb.CourierManagement.dao.CourierDao;
 import com.iiitb.CourierManagement.entity.Courier;
+import com.iiitb.CourierManagement.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @Service
 public class CourierService {
 
     @Autowired
     private CourierDao courierDao;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     public Courier addCourier(Courier courier) {
         courier.setStatus("ACTIVE");
@@ -63,5 +69,10 @@ public class CourierService {
     public void deleteCourier(Courier courier) {
         Courier cour = courierDao.findById(courier.getCourierID()).get();
         courierDao.delete(cour);
+    }
+
+    public Set<Courier> getMyCouriers(String jwtToken) {
+        String rollNo = jwtUtil.getUsernameFromToken(jwtToken);
+        return courierDao.findByOwnerRollNo(rollNo);
     }
 }
