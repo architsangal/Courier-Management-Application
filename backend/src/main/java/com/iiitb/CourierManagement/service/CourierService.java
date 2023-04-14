@@ -59,4 +59,9 @@ public class CourierService {
         }
         return courierDao.save(courier);
     }
+
+    public void deleteCourier(Courier courier) {
+        Courier cour = courierDao.findById(courier.getCourierID()).get();
+        courierDao.delete(cour);
+    }
 }

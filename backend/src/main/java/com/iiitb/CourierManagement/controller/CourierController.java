@@ -24,4 +24,10 @@ public class CourierController {
     public Courier updateCourier(@RequestBody Courier courier) {
         return courierService.updateCourier(courier);
     }
+
+    @PostMapping({"/deleteCourier"})
+    @PreAuthorize("hasRole('Admin')")
+    public void deleteCourier(@RequestBody Courier courier) {
+        courierService.deleteCourier(courier);
+    }
 }
