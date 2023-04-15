@@ -10,6 +10,7 @@ import {
   cilNotes,
   cilPencil,
   cilPuzzle,
+  cilSearch,
   cilSpeedometer,
   cilStar,
 } from '@coreui/icons'
@@ -21,10 +22,18 @@ const _nav = [
     name: 'Dashboard',
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-      text: 'NEW',
-    },
+  },
+  {
+    component: CNavItem,
+    name: 'Search By Roll Number',
+    to: '/dashboard',
+    icon: <CIcon icon={cilSearch} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'Search By Name',
+    to: '/dashboard',
+    icon: <CIcon icon={cilSearch} customClassName="nav-icon" />,
   },
   {
     component: CNavTitle,
