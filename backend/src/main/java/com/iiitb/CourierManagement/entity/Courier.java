@@ -13,6 +13,8 @@ public class Courier {
 
     private String owner;
 
+    private String courierCompany;
+
     @Basic
     private Date arrivalDate;
 
@@ -31,6 +33,14 @@ public class Courier {
     private Time deliverTime;
 
     private String status;
+
+    public String getCourierCompany() {
+        return courierCompany;
+    }
+
+    public void setCourierCompany(String courierCompany) {
+        this.courierCompany = courierCompany;
+    }
 
     public Date getDeliverDate() {
         return deliverDate;

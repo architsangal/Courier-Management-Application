@@ -50,6 +50,10 @@ public class CourierService {
                 cour.setReceiverRollNo(courier.getReceiverRollNo());
             }
 
+            if(courier.getCourierCompany()!=null) {
+                cour.setCourierCompany(courier.getCourierCompany());
+            }
+
             if(courier.getDeliverDate()!=null) {
                 cour.setDeliverDate(courier.getDeliverDate());
             }
