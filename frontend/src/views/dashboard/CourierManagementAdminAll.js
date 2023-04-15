@@ -59,77 +59,11 @@ import WidgetsBrand from "../widgets/WidgetsBrand";
 import WidgetsDropdown from "../widgets/WidgetsDropdown";
 
 const Dashboard = () => {
-  const [tableExample, setTableExample] = useState([
-    {
-      key: 1,
-      user: {
-        name: "Yiorgos Avraamu",
-        new: true,
-        registered: "Jan 1, 2021",
-      },
-      country: { name: "USA", flag: cifUs },
-      usage: {
-        value: 50,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "success",
-      },
-      payment: { name: "Mastercard", icon: cibCcMastercard },
-      activity: "10 sec ago",
-    },
-    {
-      key: 2,
-      user: {
-        name: "Avram Tarasios",
-        new: false,
-        registered: "Jan 1, 2021",
-      },
-      country: { name: "Brazil", flag: cifBr },
-      usage: {
-        value: 22,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "info",
-      },
-      payment: { name: "Visa", icon: cibCcVisa },
-      activity: "5 minutes ago",
-    },
-    {
-      key: 6,
-      user: {
-        name: "Friderik Dávid",
-        new: true,
-        registered: "Jan 1, 2021",
-      },
-      country: { name: "Poland", flag: cifPl },
-      usage: {
-        value: 43,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "success",
-      },
-      payment: { name: "Amex", icon: cibCcAmex },
-      activity: "Last week",
-    },
-  ]);
+  const [tableExample, setTableExample] = useState([]);
 
   const refresh = () =>
   {
-    setTableExample(
-      tableExample.concat({
-        key: 1,
-        user: {
-          name: "Yiorgos Avraamu",
-          new: true,
-          registered: "Jan 1, 2021",
-        },
-        country: { name: "USA", flag: cifUs },
-        usage: {
-          value: 50,
-          period: "Jun 11, 2021 - Jul 10, 2021",
-          color: "success",
-        },
-        payment: { name: "Mastercard", icon: cibCcMastercard },
-        activity: "10 sec ago",
-      }));
-      handleUpload();
+    handleUpload();
   }
 
   useEffect(() => {
@@ -157,8 +91,9 @@ const Dashboard = () => {
       // Handle the response from backend here
       .then((res) =>
       {
-        console.log(res.data);
-        setTableExample(res.data)
+        const data = res.data.sort((a, b) => {return b.courierID - a.courierID;});
+        console.log(data);
+        setTableExample(data)
       })
       // Catch errors if any
       .catch((err) => { });
@@ -188,11 +123,12 @@ const Dashboard = () => {
                       #{" "}
                     </CTableHeaderCell>
                     <CTableHeaderCell>Owner</CTableHeaderCell>
+                    <CTableHeaderCell>Reciever</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">
-                      Date
+                      Take In Time
                     </CTableHeaderCell>
                     <CTableHeaderCell className="text-center">
-                      Time
+                      Relieving Time
                     </CTableHeaderCell>
                     <CTableHeaderCell>Delivering Company</CTableHeaderCell>
                   </CTableRow>
@@ -206,31 +142,29 @@ const Dashboard = () => {
                       <CTableDataCell>
                         <div>{item.owner}</div>
                         <div className="small text-medium-emphasis">
-                          {item.ownerRollNo === null?"":item.ownerRollNo}
+                          {item.ownerRollNo === null?"Roll Number Not Known":item.ownerRollNo}
+                        </div>
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <div>{item.receiverName === null?"Name Not Known":item.receiverName}</div>
+                        <div className="small text-medium-emphasis">
+                          {item.receiverRollNo === null?"Roll Number Not Known":item.ownerRollNo}
                         </div>
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
                       <div>{item.arrivalDate}</div>
+                      <div className="small text-medium-emphasis">
+                          <div>{item.arrivalTime}</div>
+                      </div>
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                      <div>{item.arrivalTime}</div>
+                      <div>{item.deliverDate===null?"Not Taken Yet":item.deliverDate}</div>
+                      <div className="small text-medium-emphasis">
+                          <div>{item.deliverTime === null ? "":item.deliverTime}</div>
+                      </div>                      
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div className="clearfix">
-                          <div className="float-start">
-                            {/* <strong>{item.usage.value}%</strong> */}
-                          </div>
-                          <div className="float-end">
-                            <small className="text-medium-emphasis">
-                              {/* {item.usage.period} */}
-                            </small>
-                          </div>
-                        </div>
-                        <CProgress
-                          thin
-                          // color={item.usage.color}
-                          // value={item.usage.value}
-                        />
+                      <div className="text-center">{item.courierCompany}</div>
                       </CTableDataCell>
                     </CTableRow>
                   ))}
