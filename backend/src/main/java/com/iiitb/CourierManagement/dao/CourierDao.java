@@ -7,4 +7,5 @@ import java.util.Set;
 
 public interface CourierDao extends CrudRepository<Courier,Integer> {
     Set<Courier> findByOwnerRollNo(String rollNo);
+    Set<Courier> findByOwnerContaining(String name);
 }

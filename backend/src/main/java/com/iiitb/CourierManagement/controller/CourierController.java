@@ -55,4 +55,10 @@ public class CourierController {
         return courierService.getCouriersByRollNo(courier.getOwnerRollNo());
     }
 
+    @GetMapping({"/getCouriersByName"})
+    @PreAuthorize("hasRole('Admin')")
+    public Set<Courier> getCouriersByName(@RequestBody Courier courier) {
+        return courierService.getCouriersByName(courier.getOwner());
+    }
+
 }

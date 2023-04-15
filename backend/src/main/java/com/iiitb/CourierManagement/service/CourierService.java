@@ -91,4 +91,9 @@ public class CourierService {
         Set<Courier> couriers = new HashSet<>();
         return courierDao.findByOwnerRollNo(rollNo);
     }
+
+    public Set<Courier> getCouriersByName(String name) {
+        Set<Courier> couriers = new HashSet<>();
+        return courierDao.findByOwnerContaining(name);
+    }
 }
