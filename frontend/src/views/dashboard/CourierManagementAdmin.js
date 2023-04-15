@@ -45,7 +45,6 @@ import {
   cilBowling,
   cilBorderAll,
   cilLoop,
-  cilInbox,
 } from "@coreui/icons";
 
 import avatar1 from "src/assets/images/avatars/1.jpg";
@@ -138,18 +137,19 @@ const Dashboard = () => {
 
   const handleUpload = () => {
     let formData = new FormData();
-    
     // Adding files to the formdata
+    formData.append("userName","archit");
+    formData.append("userFirstName","Archit");
+    formData.append("userLastName", "Sangal");
+    formData.append("userPassword", "1234");
     axios({
       // Endpoint to send files
-      url: "http://localhost:9090/getAllCouriers",
-      method: "GET",
+      url: "http://localhost:9090/registerNewUser",
+      method: "POST",
       headers: {
         // Add any auth token here
         // authorization: "your token comes here",
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer "+JSON.parse(localStorage.getItem('details')).token
+        'Accept': 'application/json', 'Content-Type': 'application/json'
       },
       // Attaching the form data
       data: formData,
@@ -157,8 +157,7 @@ const Dashboard = () => {
       // Handle the response from backend here
       .then((res) =>
       {
-        console.log(res.data);
-        setTableExample(res.data)
+        console.log(res);
       })
       // Catch errors if any
       .catch((err) => { });
@@ -187,49 +186,58 @@ const Dashboard = () => {
                       {" "}
                       #{" "}
                     </CTableHeaderCell>
-                    <CTableHeaderCell>Owner</CTableHeaderCell>
+                    <CTableHeaderCell>Packages</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">
                       Date
                     </CTableHeaderCell>
                     <CTableHeaderCell className="text-center">
                       Time
                     </CTableHeaderCell>
-                    <CTableHeaderCell>Delivering Company</CTableHeaderCell>
+                    <CTableHeaderCell>Other Information</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
                   {tableExample.map((item, index) => (
                     <CTableRow v-for="item in tableItems" key={index}>
                       <CTableDataCell className="text-center">
-                        <div>{item.courierID}</div>
+                        <div>{item.key}</div>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div>{item.owner}</div>
+                        <div>{item.user.name}</div>
                         <div className="small text-medium-emphasis">
-                          {item.ownerRollNo === null?"":item.ownerRollNo}
+                          <span>{item.user.new ? "New" : "Recurring"}</span> |
+                          Registered: {item.user.registered}
                         </div>
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                      <div>{item.arrivalDate}</div>
+                        <CIcon
+                          size="xl"
+                          icon={item.country.flag}
+                          title={item.country.name}
+                        />
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                      <div>{item.arrivalTime}</div>
+                        <CIcon
+                          size="xl"
+                          icon={item.country.flag}
+                          title={item.country.name}
+                        />
                       </CTableDataCell>
                       <CTableDataCell>
                         <div className="clearfix">
                           <div className="float-start">
-                            {/* <strong>{item.usage.value}%</strong> */}
+                            <strong>{item.usage.value}%</strong>
                           </div>
                           <div className="float-end">
                             <small className="text-medium-emphasis">
-                              {/* {item.usage.period} */}
+                              {item.usage.period}
                             </small>
                           </div>
                         </div>
                         <CProgress
                           thin
-                          // color={item.usage.color}
-                          // value={item.usage.value}
+                          color={item.usage.color}
+                          value={item.usage.value}
                         />
                       </CTableDataCell>
                     </CTableRow>

@@ -18,13 +18,18 @@ import CIcon from "@coreui/icons-react";
 import { cilLockLocked, cilUser } from "@coreui/icons";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom'
+import { CAlert } from "@coreui/react";
 
 const Login = () => {
+  const navigate = useNavigate()
 
   const [username, setUserName] = useState("");
   const handleUserName = (event) => {
     setUserName(event.target.value);
   };
+
+  const [error, setError] = useState("");
+
 
   const [password, setPassword] = useState("");
   const handlePassword = (event) => {
@@ -56,10 +61,16 @@ const Login = () => {
         // console.log(details.username);
         // console.log(details.token);
         console.log(details.role);
-        const navigate = useNavigate()
+
         navigate('/dashboard')
+
       })
-      .catch((err) => {});
+      .catch((err) => {
+        // console.log(err.response.status);
+        setError("Some Thing Went Wrong");
+        if(err.response.status == '401')
+          setError("Error "+err.response.status + ":"  + " Incorrect Credentials");        
+      });
 
     // clearAllEntries();
   }
@@ -73,6 +84,17 @@ const Login = () => {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm onSubmit={submitted}>
+                    
+                  <div className="mt-2">
+                  <CAlert
+                    dismissible={true}
+                    color="danger"
+                    visible={error !== ''}
+                  >
+                    {error}
+                  </CAlert>
+                </div>
+
                     <h1>Login</h1>
                     <p className="text-medium-emphasis">
                       Sign In to your account
