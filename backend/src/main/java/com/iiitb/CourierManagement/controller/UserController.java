@@ -6,15 +6,15 @@ import com.iiitb.CourierManagement.entity.Role;
 import com.iiitb.CourierManagement.entity.User;
 import com.iiitb.CourierManagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.HashSet;
 import java.util.Set;
 
 @RestController
+@CrossOrigin
 public class UserController {
     @Autowired
     private UserService userService;
@@ -28,4 +28,5 @@ public class UserController {
     public User registerNewUser(@RequestBody User user) {
         return userService.registerNewUser(user);
     }
+
 }
