@@ -45,6 +45,7 @@ import {
   cilBowling,
   cilBorderAll,
   cilLoop,
+  cilInbox,
 } from "@coreui/icons";
 
 import avatar1 from "src/assets/images/avatars/1.jpg";
@@ -58,77 +59,11 @@ import WidgetsBrand from "../widgets/WidgetsBrand";
 import WidgetsDropdown from "../widgets/WidgetsDropdown";
 
 const Dashboard = () => {
-  const [tableExample, setTableExample] = useState([
-    {
-      key: 1,
-      user: {
-        name: "Yiorgos Avraamu",
-        new: true,
-        registered: "Jan 1, 2021",
-      },
-      country: { name: "USA", flag: cifUs },
-      usage: {
-        value: 50,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "success",
-      },
-      payment: { name: "Mastercard", icon: cibCcMastercard },
-      activity: "10 sec ago",
-    },
-    {
-      key: 2,
-      user: {
-        name: "Avram Tarasios",
-        new: false,
-        registered: "Jan 1, 2021",
-      },
-      country: { name: "Brazil", flag: cifBr },
-      usage: {
-        value: 22,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "info",
-      },
-      payment: { name: "Visa", icon: cibCcVisa },
-      activity: "5 minutes ago",
-    },
-    {
-      key: 6,
-      user: {
-        name: "Friderik Dávid",
-        new: true,
-        registered: "Jan 1, 2021",
-      },
-      country: { name: "Poland", flag: cifPl },
-      usage: {
-        value: 43,
-        period: "Jun 11, 2021 - Jul 10, 2021",
-        color: "success",
-      },
-      payment: { name: "Amex", icon: cibCcAmex },
-      activity: "Last week",
-    },
-  ]);
+  const [tableExample, setTableExample] = useState([]);
 
   const refresh = () =>
   {
-    setTableExample(
-      tableExample.concat({
-        key: 1,
-        user: {
-          name: "Yiorgos Avraamu",
-          new: true,
-          registered: "Jan 1, 2021",
-        },
-        country: { name: "USA", flag: cifUs },
-        usage: {
-          value: 50,
-          period: "Jun 11, 2021 - Jul 10, 2021",
-          color: "success",
-        },
-        payment: { name: "Mastercard", icon: cibCcMastercard },
-        activity: "10 sec ago",
-      }));
-      handleUpload();
+    handleUpload();
   }
 
   useEffect(() => {
@@ -137,19 +72,18 @@ const Dashboard = () => {
 
   const handleUpload = () => {
     let formData = new FormData();
+    
     // Adding files to the formdata
-    formData.append("userName","archit");
-    formData.append("userFirstName","Archit");
-    formData.append("userLastName", "Sangal");
-    formData.append("userPassword", "1234");
     axios({
       // Endpoint to send files
-      url: "http://localhost:9090/registerNewUser",
-      method: "POST",
+      url: "http://localhost:9090/getAllCouriers",
+      method: "GET",
       headers: {
         // Add any auth token here
         // authorization: "your token comes here",
-        'Accept': 'application/json', 'Content-Type': 'application/json'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': "Bearer "+JSON.parse(localStorage.getItem('details')).token
       },
       // Attaching the form data
       data: formData,
@@ -157,7 +91,9 @@ const Dashboard = () => {
       // Handle the response from backend here
       .then((res) =>
       {
-        console.log(res);
+        const data = res.data.sort((a, b) => {return b.courierID - a.courierID;});
+        console.log(data);
+        setTableExample(data)
       })
       // Catch errors if any
       .catch((err) => { });
@@ -186,59 +122,49 @@ const Dashboard = () => {
                       {" "}
                       #{" "}
                     </CTableHeaderCell>
-                    <CTableHeaderCell>Packages</CTableHeaderCell>
+                    <CTableHeaderCell>Owner</CTableHeaderCell>
+                    <CTableHeaderCell>Reciever</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">
-                      Date
+                      Take In Time
                     </CTableHeaderCell>
                     <CTableHeaderCell className="text-center">
-                      Time
+                      Relieving Time
                     </CTableHeaderCell>
-                    <CTableHeaderCell>Other Information</CTableHeaderCell>
+                    <CTableHeaderCell>Delivering Company</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
                   {tableExample.map((item, index) => (
                     <CTableRow v-for="item in tableItems" key={index}>
                       <CTableDataCell className="text-center">
-                        <div>{item.key}</div>
+                        <div>{item.courierID}</div>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div>{item.user.name}</div>
+                        <div>{item.owner}</div>
                         <div className="small text-medium-emphasis">
-                          <span>{item.user.new ? "New" : "Recurring"}</span> |
-                          Registered: {item.user.registered}
+                          {item.ownerRollNo === null?"Roll Number Not Known":item.ownerRollNo}
                         </div>
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <CIcon
-                          size="xl"
-                          icon={item.country.flag}
-                          title={item.country.name}
-                        />
-                      </CTableDataCell>
-                      <CTableDataCell className="text-center">
-                        <CIcon
-                          size="xl"
-                          icon={item.country.flag}
-                          title={item.country.name}
-                        />
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div className="clearfix">
-                          <div className="float-start">
-                            <strong>{item.usage.value}%</strong>
-                          </div>
-                          <div className="float-end">
-                            <small className="text-medium-emphasis">
-                              {item.usage.period}
-                            </small>
-                          </div>
+                        <div>{item.receiverName === null?"Name Not Known":item.receiverName}</div>
+                        <div className="small text-medium-emphasis">
+                          {item.receiverRollNo === null?"Roll Number Not Known":item.ownerRollNo}
                         </div>
-                        <CProgress
-                          thin
-                          color={item.usage.color}
-                          value={item.usage.value}
-                        />
+                      </CTableDataCell>
+                      <CTableDataCell className="text-center">
+                      <div>{item.arrivalDate}</div>
+                      <div className="small text-medium-emphasis">
+                          <div>{item.arrivalTime}</div>
+                      </div>
+                      </CTableDataCell>
+                      <CTableDataCell className="text-center">
+                      <div>{item.deliverDate===null?"Not Taken Yet":item.deliverDate}</div>
+                      <div className="small text-medium-emphasis">
+                          <div>{item.deliverTime === null ? "":item.deliverTime}</div>
+                      </div>                      
+                      </CTableDataCell>
+                      <CTableDataCell>
+                      <div className="text-center">{item.courierCompany}</div>
                       </CTableDataCell>
                     </CTableRow>
                   ))}

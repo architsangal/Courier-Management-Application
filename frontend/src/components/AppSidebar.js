@@ -14,6 +14,7 @@ import 'simplebar/dist/simplebar.min.css'
 
 // sidebar nav config
 import navigation from '../_nav'
+import navigationAdmin from '../_navAdmin'
 
 const AppSidebar = () => {
   const dispatch = useDispatch()
@@ -30,12 +31,10 @@ const AppSidebar = () => {
       }}
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
-        <CIcon className="sidebar-brand-full" icon={logoNegative} height={35} />
-        <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
-          <AppSidebarNav items={navigation} />
+          <AppSidebarNav items={JSON.parse(localStorage.getItem('details')).role === 'Admin'? navigationAdmin: navigation} />
         </SimpleBar>
       </CSidebarNav>
       <CSidebarToggler
