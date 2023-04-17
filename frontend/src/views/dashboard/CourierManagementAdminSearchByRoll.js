@@ -8,9 +8,13 @@ import {
   CCardBody,
   CCardFooter,
   CCardHeader,
+  CInputGroup,
+  CInputGroupText,
+  CFormInput,
   CCol,
   CProgress,
   CRow,
+  CForm,
   CTable,
   CTableBody,
   CTableDataCell,
@@ -46,6 +50,7 @@ import {
   cilBorderAll,
   cilLoop,
   cilInbox,
+  cilSearch,
 } from "@coreui/icons";
 
 import avatar1 from "src/assets/images/avatars/1.jpg";
@@ -60,56 +65,66 @@ import WidgetsDropdown from "../widgets/WidgetsDropdown";
 
 const Dashboard = () => {
   const [tableExample, setTableExample] = useState([]);
+  const [rollNumber, setRollNumber] = useState("");
 
-  const refresh = () =>
-  {
-    handleUpload();
-  }
+  const handleRollNumber = (event) => {
+  setRollNumber(event.target.value);
+  };
 
-  useEffect(() => {
-    handleUpload();
-  }, []);
+  const submitted = () => {
+    console.log(rollNumber);
+    console.log(JSON.parse(localStorage.getItem('details')).token);
 
-  const handleUpload = () => {
-    let formData = new FormData();
-    
     // Adding files to the formdata
-    axios({
-      // Endpoint to send files
-      url: "http://localhost:9090/getAllCouriers",
-      method: "GET",
-      headers: {
-        // Add any auth token here
-        // authorization: "your token comes here",
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer "+JSON.parse(localStorage.getItem('details')).token
+    axios.get("http://localhost:9090/getCouriersByRollNo/", 
+    {
+      params: { ownerRollNo: rollNumber },
+      headers : {
+        "Authorization" : "Bearer "+JSON.parse(localStorage.getItem('details')).token
       },
-      // Attaching the form data
-      data: formData,
     })
-      // Handle the response from backend here
-      .then((res) =>
-      {
-        const data = res.data.sort((a, b) => {return b.courierID - a.courierID;});
+      .then((res) => {
+        const data = res.data.sort((a, b) => {
+          return b.courierID - a.courierID;
+        });
         console.log(data);
-        setTableExample(data)
+        setTableExample(data);
       })
       // Catch errors if any
-      .catch((err) => { });
+      .catch((err) => {});
   };
 
   return (
     <>
       <CRow>
         <CCol xs>
-          <div className="right-button">
-            <CButton color="success">
-              <CIcon size="xxl" icon={cilLoop} style={{ color: '#e9eaed' }} onClick={refresh}/>
-              {"   "}
-              {/* <p className="grey-text">Refresh</p> */}
-            </CButton>
-          </div>
+          <CForm onSubmit={submitted}>
+            <CInputGroup className="mb-3">
+              <CInputGroupText>
+                <CIcon icon={cilUser} />
+              </CInputGroupText>
+
+              <CFormInput
+                placeholder="Enter the Roll Numer"
+                value={rollNumber}
+                onChange={handleRollNumber}
+              />
+            </CInputGroup>
+            <div className="right-button">
+              <CButton type="submit" color="info">
+                <span className="padding-around">Search </span>
+                
+                <CIcon
+                  size="sm"
+                  icon={cilSearch}
+                  style={{ color: "#e9eaed" }}
+                />
+                {"   "}
+                {/* <p className="grey-text">Refresh</p> */}
+              </CButton>
+            </div>{" "}
+          </CForm>
+
           <CCard className="mb-4">
             <CCardHeader>Available Recieved Packages</CCardHeader>
             <CCardBody>
@@ -142,29 +157,43 @@ const Dashboard = () => {
                       <CTableDataCell>
                         <div>{item.owner}</div>
                         <div className="small text-medium-emphasis">
-                          {item.ownerRollNo === null?"Roll Number Not Known":item.ownerRollNo}
+                          {item.ownerRollNo === null
+                            ? "Roll Number Not Known"
+                            : item.ownerRollNo}
                         </div>
                       </CTableDataCell>
                       <CTableDataCell>
-                        <div>{item.receiverName === null?"Name Not Known":item.receiverName}</div>
+                        <div>
+                          {item.receiverName === null
+                            ? "Name Not Known"
+                            : item.receiverName}
+                        </div>
                         <div className="small text-medium-emphasis">
-                          {item.receiverRollNo === null?"Roll Number Not Known":item.receiverRollNo}
+                          {item.receiverRollNo === null
+                            ? "Roll Number Not Known"
+                            : item.receiverRollNo}
                         </div>
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                      <div>{item.arrivalDate}</div>
-                      <div className="small text-medium-emphasis">
+                        <div>{item.arrivalDate}</div>
+                        <div className="small text-medium-emphasis">
                           <div>{item.arrivalTime}</div>
-                      </div>
+                        </div>
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
-                      <div>{item.deliverDate===null?"Not Taken Yet":item.deliverDate}</div>
-                      <div className="small text-medium-emphasis">
-                          <div>{item.deliverTime === null ? "":item.deliverTime}</div>
-                      </div>                      
+                        <div>
+                          {item.deliverDate === null
+                            ? "Not Taken Yet"
+                            : item.deliverDate}
+                        </div>
+                        <div className="small text-medium-emphasis">
+                          <div>
+                            {item.deliverTime === null ? "" : item.deliverTime}
+                          </div>
+                        </div>
                       </CTableDataCell>
                       <CTableDataCell>
-                      <div className="text-center">{item.courierCompany}</div>
+                        <div className="text-center">{item.courierCompany}</div>
                       </CTableDataCell>
                     </CTableRow>
                   ))}
