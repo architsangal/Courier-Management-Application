@@ -61,8 +61,10 @@ const Login = () => {
         // console.log(details.username);
         // console.log(details.token);
         console.log(details.role);
-
-        navigate('/dashboard')
+        if(details.role === 'Admin')
+          navigate('/dashboardAdmin')
+        else
+          navigate('/dashboard')
 
       })
       .catch((err) => {

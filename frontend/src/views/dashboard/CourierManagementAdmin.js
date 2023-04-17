@@ -71,7 +71,6 @@ const Dashboard = () => {
   }, []);
 
   const handleUpload = () => {
-    let formData = new FormData();
     
     // Adding files to the formdata
     axios({
@@ -85,15 +84,27 @@ const Dashboard = () => {
         'Content-Type': 'application/json',
         'Authorization': "Bearer "+JSON.parse(localStorage.getItem('details')).token
       },
-      // Attaching the form data
-      data: formData,
     })
       // Handle the response from backend here
       .then((res) =>
       {
-        const data = res.data.sort((a, b) => {return b.courierID - a.courierID;});
+        const all = res.data;
+        console.log(all);
+        let data = [];
+        for(let temp=0;temp<all.length;temp+=1)
+        {
+          console.log(all[temp].receiverName !== null);
+          if(all[temp].receiverName === null)
+          {
+            data.push(all[temp]);
+          }
+        }
         console.log(data);
-        setTableExample(data)
+        
+        const data_dis = data.sort((a, b) => {return b.courierID - a.courierID;});
+        console.log("temp" + data_dis);
+        
+        setTableExample(data_dis)
       })
       // Catch errors if any
       .catch((err) => { });
