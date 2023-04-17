@@ -47,13 +47,13 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Search By Roll Number',
-    to: '/dashboard',
+    to: '/AdminSearchRollNumber',
     icon: <CIcon icon={cilSearch} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'Search By Name',
-    to: '/dashboard',
+    to: '/AdminSearchName',
     icon: <CIcon icon={cilSearch} customClassName="nav-icon" />,
   },
 
