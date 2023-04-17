@@ -88,7 +88,9 @@ public class CourierService {
     }
 
     public Set<Courier> getCouriersByRollNo(String rollNo) {
+        System.out.println(rollNo);
         Set<Courier> couriers = new HashSet<>();
+        System.out.println(courierDao.findByOwnerRollNo(rollNo));
         return courierDao.findByOwnerRollNo(rollNo);
     }
 }

@@ -51,8 +51,9 @@ public class CourierController {
 
     @GetMapping({"/getCouriersByRollNo"})
     @PreAuthorize("hasRole('Admin')")
-    public Set<Courier> getCouriersByRollNo(@RequestBody Courier courier) {
-        return courierService.getCouriersByRollNo(courier.getOwnerRollNo());
+    public Set<Courier> getCouriersByRollNo(@RequestParam String ownerRollNo) {
+        System.out.println(courierService.getCouriersByRollNo(ownerRollNo));
+        return courierService.getCouriersByRollNo(ownerRollNo);
     }
 
 }
