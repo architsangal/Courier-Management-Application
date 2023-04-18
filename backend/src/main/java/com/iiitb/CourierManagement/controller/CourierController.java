@@ -58,8 +58,8 @@ public class CourierController {
 
     @GetMapping({"/getCouriersByName"})
     @PreAuthorize("hasRole('Admin')")
-    public Set<Courier> getCouriersByName(@RequestBody Courier courier) {
-        return courierService.getCouriersByName(courier.getOwner());
+    public Set<Courier> getCouriersByName(@RequestParam String owner) {
+        return courierService.getCouriersByName(owner);
     }
 
 }

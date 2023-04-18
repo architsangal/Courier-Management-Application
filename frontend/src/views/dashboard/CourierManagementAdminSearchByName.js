@@ -72,13 +72,11 @@ const Dashboard = () => {
   };
 
   const submitted = () => {
-    console.log(rollNumber);
-    console.log(JSON.parse(localStorage.getItem('details')).token);
 
     // Adding files to the formdata
-    axios.get("http://localhost:9090/getCouriersByRollNo/", 
+    axios.get("http://localhost:9090/getCouriersByName/", 
     {
-      params: { ownerRollNo: rollNumber },
+      params: { owner: rollNumber },
       headers : {
         "Authorization" : "Bearer "+JSON.parse(localStorage.getItem('details')).token
       },
@@ -105,7 +103,7 @@ const Dashboard = () => {
               </CInputGroupText>
 
               <CFormInput
-                placeholder="Enter the Roll Numer"
+                placeholder="Enter the Name of Owner"
                 value={rollNumber}
                 onChange={handleRollNumber}
               />
