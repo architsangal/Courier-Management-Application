@@ -65,18 +65,17 @@ import WidgetsDropdown from "../widgets/WidgetsDropdown";
 
 const Dashboard = () => {
   const [tableExample, setTableExample] = useState([]);
-  const [rollNumber, setRollNumber] = useState("");
 
-  const handleRollNumber = (event) => {
-  setRollNumber(event.target.value);
-  };
+  useEffect(() => {
+    submitted();
+  }, []);
+
 
   const submitted = () => {
 
     // Adding files to the formdata
-    axios.get("http://localhost:9090/getCouriersByRollNo/", 
+    axios.get("http://localhost:9090/getMyCouriers/", 
     {
-      params: { ownerRollNo: rollNumber },
       headers : {
         "Authorization" : "Bearer "+JSON.parse(localStorage.getItem('details')).token
       },
@@ -96,32 +95,6 @@ const Dashboard = () => {
     <>
       <CRow>
         <CCol xs>
-          <CForm onSubmit={submitted}>
-            <CInputGroup className="mb-3">
-              <CInputGroupText>
-                <CIcon icon={cilUser} />
-              </CInputGroupText>
-
-              <CFormInput
-                placeholder="Enter the Roll Numer"
-                value={rollNumber}
-                onChange={handleRollNumber}
-              />
-            </CInputGroup>
-            <div className="right-button">
-              <CButton type="submit" color="info">
-                <span className="padding-around">Search </span>
-                
-                <CIcon
-                  size="sm"
-                  icon={cilSearch}
-                  style={{ color: "#e9eaed" }}
-                />
-                {"   "}
-                {/* <p className="grey-text">Refresh</p> */}
-              </CButton>
-            </div>{" "}
-          </CForm>
 
           <CCard className="mb-4">
             <CCardHeader>Available Recieved Packages</CCardHeader>

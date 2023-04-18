@@ -68,6 +68,11 @@ const Dashboard = () => {
     setShowAlertFail(false);
   };
 
+  const [cid, setCID] = useState("");
+  const handleCID = (event) => {
+    setCID(event.target.value);
+  };
+
   const [username, setUserName] = useState("");
   const handleUserName = (event) => {
     setUserName(event.target.value);
@@ -106,13 +111,14 @@ const Dashboard = () => {
 
   const handleUpload = () => {
     let formData = new FormData();
-    formData.append("owner",firstName+" "+lastName);
-    formData.append("courierCompany",company);
-    formData.append("arrivalDate",date);
-    formData.append("arrivalTime",time);
-    formData.append("ownerRollNo",username);
+    formData.append("courierID",cid);
+    formData.append("receiverName",firstName+" "+lastName);
+    formData.append("status","COMPLETE");
+    formData.append("deliverDate",date);
+    formData.append("deliverTime",time);
+    formData.append("receiverRollNo",username);
     axios({
-      url: "http://localhost:9090/addCourier",
+      url: "http://localhost:9090/updateCourier",
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -149,7 +155,7 @@ const Dashboard = () => {
                 color="success"
                 visible={showAlertSuccess}
               >
-                Courier Added!
+                Courier Receiver Info Updated!
               </CAlert>
             </div>
 
@@ -159,12 +165,12 @@ const Dashboard = () => {
                 color="danger"
                 visible={showAlertFail}
               >
-                Courier Couldn't be added!
+                Courier Update Failed!
               </CAlert>
             </div>
 
             <CForm onSubmit={submitted}>
-              <h1>Add a courier</h1>
+              <h1>Reciever Info Update</h1>
               <p className="text-medium-emphasis">Enter the following details</p>
 
               <CInputGroup className="mb-3">
@@ -172,7 +178,19 @@ const Dashboard = () => {
                   <CIcon icon={cilUser} />
                 </CInputGroupText>
                 <CFormInput
-                  placeholder="Owner Roll Number"
+                  placeholder="Courier ID"
+                  autoComplete="cid"
+                  value={cid}
+                  onChange={handleCID}
+                />
+              </CInputGroup>
+
+              <CInputGroup className="mb-3">
+                <CInputGroupText>
+                  <CIcon icon={cilUser} />
+                </CInputGroupText>
+                <CFormInput
+                  placeholder="Reciever Roll Number"
                   autoComplete="username"
                   value={username}
                   onChange={handleUserName}
@@ -227,21 +245,9 @@ const Dashboard = () => {
                 />
               </CInputGroup>
 
-              <CInputGroup className="mb-3">
-                <CInputGroupText>
-                  <CIcon icon={cilUser} />
-                </CInputGroupText>
-
-                <CFormInput
-                  placeholder="Delivery Company"
-                  value={company}
-                  onChange={handleCompany}
-                />
-              </CInputGroup>
-
               <div className="d-grid">
                 <CButton type="submit" color="success">
-                  Add Courier
+                  Recieve Courier
                 </CButton>
               </div>
             </CForm>

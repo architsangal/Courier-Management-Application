@@ -70,19 +70,19 @@ const _nav = [
   {
     component: CNavItem,
     name: 'Receiving Courier',
-    to: '/dashboard',
+    to: '/dashboardAdminRecieve',
     icon: <CIcon icon={cilSync} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'Update A Courier Details',
-    to: '/dashboard',
-    icon: <CIcon icon={cilLibraryAdd} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Update A Courier Details',
+  //   to: '/dashboard',
+  //   icon: <CIcon icon={cilLibraryAdd} customClassName="nav-icon" />,
+  // },
   {
     component: CNavItem,
     name: 'Delete A Courier Details',
-    to: '/dashboard',
+    to: '/dashboardAdminDelete',
     icon: <CIcon icon={cilMinus} customClassName="nav-icon" />,
   }
 ]

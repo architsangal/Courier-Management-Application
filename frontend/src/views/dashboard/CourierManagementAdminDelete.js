@@ -68,6 +68,11 @@ const Dashboard = () => {
     setShowAlertFail(false);
   };
 
+  const [cid, setCID] = useState("");
+  const handleCID = (event) => {
+    setCID(event.target.value);
+  };
+
   const [username, setUserName] = useState("");
   const handleUserName = (event) => {
     setUserName(event.target.value);
@@ -106,13 +111,9 @@ const Dashboard = () => {
 
   const handleUpload = () => {
     let formData = new FormData();
-    formData.append("owner",firstName+" "+lastName);
-    formData.append("courierCompany",company);
-    formData.append("arrivalDate",date);
-    formData.append("arrivalTime",time);
-    formData.append("ownerRollNo",username);
+    formData.append("courierID",cid);
     axios({
-      url: "http://localhost:9090/addCourier",
+      url: "http://localhost:9090/deleteCourier",
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -130,6 +131,8 @@ const Dashboard = () => {
         setShowAlertFail(true);
         setShowAlertSuccess(false);
       });
+
+      setCID("");
   };
 
   const submitted = () => {
@@ -149,7 +152,7 @@ const Dashboard = () => {
                 color="success"
                 visible={showAlertSuccess}
               >
-                Courier Added!
+                Courier Deleted!
               </CAlert>
             </div>
 
@@ -159,12 +162,12 @@ const Dashboard = () => {
                 color="danger"
                 visible={showAlertFail}
               >
-                Courier Couldn't be added!
+                Courier Deletion Failed!
               </CAlert>
             </div>
 
             <CForm onSubmit={submitted}>
-              <h1>Add a courier</h1>
+              <h1>Courier Delete  </h1>
               <p className="text-medium-emphasis">Enter the following details</p>
 
               <CInputGroup className="mb-3">
@@ -172,76 +175,16 @@ const Dashboard = () => {
                   <CIcon icon={cilUser} />
                 </CInputGroupText>
                 <CFormInput
-                  placeholder="Owner Roll Number"
-                  autoComplete="username"
-                  value={username}
-                  onChange={handleUserName}
-                />
-              </CInputGroup>
-
-              <CInputGroup className="mb-3">
-                <CInputGroupText>
-                  <CIcon icon={cilUser} />
-                </CInputGroupText>
-
-                <CFormInput
-                  placeholder="First Name"
-                  value={firstName}
-                  onChange={handleFirstName}
-                />
-              </CInputGroup>
-
-              <CInputGroup className="mb-3">
-                <CInputGroupText>
-                  <CIcon icon={cilUser} />
-                </CInputGroupText>
-
-                <CFormInput
-                  placeholder="Last Name"
-                  value={lastName}
-                  onChange={handleLastName}
-                />
-              </CInputGroup>
-
-              <CInputGroup className="mb-3">
-                <CInputGroupText>
-                  <CIcon icon={cilUser} />
-                </CInputGroupText>
-
-                <CFormInput
-                  placeholder="Date (YYYY-MM-DD)"
-                  value={date}
-                  onChange={handleDate}
-                />
-              </CInputGroup>
-
-              <CInputGroup className="mb-3">
-                <CInputGroupText>
-                  <CIcon icon={cilUser} />
-                </CInputGroupText>
-
-                <CFormInput
-                  placeholder="Time (HH:MM:SS)"
-                  value={time}
-                  onChange={handleTime}
-                />
-              </CInputGroup>
-
-              <CInputGroup className="mb-3">
-                <CInputGroupText>
-                  <CIcon icon={cilUser} />
-                </CInputGroupText>
-
-                <CFormInput
-                  placeholder="Delivery Company"
-                  value={company}
-                  onChange={handleCompany}
+                  placeholder="Courier ID"
+                  autoComplete="cid"
+                  value={cid}
+                  onChange={handleCID}
                 />
               </CInputGroup>
 
               <div className="d-grid">
                 <CButton type="submit" color="success">
-                  Add Courier
+                  Delete Courier
                 </CButton>
               </div>
             </CForm>

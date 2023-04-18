@@ -1,11 +1,15 @@
 import React from 'react'
 
+// user
 const Dashboard = React.lazy(() => import('./views/dashboard/CourierManagementUser'))
+const DashboardUserCourier = React.lazy(() => import('./views/dashboard/CourierManagementUserCourier'))
 
 // admin
 const DashboardAdmin = React.lazy(() => import('./views/dashboard/CourierManagementAdmin'))
 const DashboardAdminAll = React.lazy(() => import('./views/dashboard/CourierManagementAdminAll'))
 const DashboardAdminAdd = React.lazy(() => import('./views/dashboard/CourierManagementAdminAdd'))
+const DashboardAdminRecieve = React.lazy(() => import('./views/dashboard/CourierManagementAdminRecieve'))
+const DashboardAdminDelete = React.lazy(() => import('./views/dashboard/CourierManagementAdminDelete'))
 const CourierManagementAdminSearchByRoll = React.lazy(() => import('./views/dashboard/CourierManagementAdminSearchByRoll'))
 const CourierManagementAdminSearchByName = React.lazy(() => import('./views/dashboard/CourierManagementAdminSearchByName'))
 
@@ -62,10 +66,13 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+  { path: '/dashboardUserCouriers', name: 'Dashboard', element: DashboardUserCourier },
 
   { path: '/dashboardAdmin', name: 'Dashboard', element: DashboardAdmin },
   { path: '/dashboardAdminAll', name: 'Dashboard', element: DashboardAdminAll },
   { path: '/dashboardAdminAdd', name: 'Dashboard', element: DashboardAdminAdd },
+  { path: '/dashboardAdminRecieve', name: 'Dashboard', element: DashboardAdminRecieve },
+  { path: '/dashboardAdminDelete', name: 'Dashboard', element: DashboardAdminDelete },
   { path: '/adminSearchRollNumber', name: 'Dashboard', element: CourierManagementAdminSearchByRoll },
   { path: '/adminSearchName', name: 'Dashboard', element: CourierManagementAdminSearchByName },
   
