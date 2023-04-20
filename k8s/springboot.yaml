@@ -1,0 +1,46 @@
+# Define a 'Service' To Expose the application
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot
+spec:
+  ports:
+    - protocol: "TCP"
+      port: 9090    # Port inside the cluster
+      targetPort: 9090   # Port exposed to the outside
+      nodePort: 30000
+  selector:
+    app: mysql
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: springboot
+          image: architsangal/courier_spring_boot:latest
+          imagePullPolicy: "Always"
+          ports:
+            - containerPort: 9090
+              protocol: TCP
+              name: tcp
+          env:   # Setting Environmental Variables
+            - name: MYSQL_HOST   # Setting Database host address
+              value: mysql
+            - name: MYSQL_DATABASE  # Setting Database name
+              value: iiitb_couriers
+            - name: MYSQL_USER  # Setting Database username
+              value: user
+            - name: MYSQL_PASSWORD # Setting Database password
+              value: user

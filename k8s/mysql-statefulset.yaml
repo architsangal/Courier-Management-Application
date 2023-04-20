@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-statefulset
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  serviceName: mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      # terminationGracePeriodSeconds: 10
+      containers:
+      - name: mysql
+        image: mysql:latest
+        args:
+            - --bind-address=0.0.0
+        ports:
+        - containerPort: 3306
+          protocol: TCP
+          name: tcp
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: ROOT_PASSWORD
+                name: mysql-secret
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: mysql-secret-user
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: mysql-secret-user
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      storageClassName: standard
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
