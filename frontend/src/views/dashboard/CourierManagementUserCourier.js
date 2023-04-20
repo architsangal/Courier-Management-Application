@@ -74,7 +74,7 @@ const Dashboard = () => {
   const submitted = () => {
 
     // Adding files to the formdata
-    axios.get("http://localhost:9090/getMyCouriers/", 
+    axios.get(process.env.REACT_APP_BACKEND_API_URL+"getMyCouriers/", 
     {
       headers : {
         "Authorization" : "Bearer "+JSON.parse(localStorage.getItem('details')).token

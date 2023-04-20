@@ -112,7 +112,7 @@ const Dashboard = () => {
     formData.append("arrivalTime",time);
     formData.append("ownerRollNo",username);
     axios({
-      url: "http://localhost:9090/addCourier",
+      url: process.env.REACT_APP_BACKEND_API_URL+"addCourier",
       method: "POST",
       headers: {
         'Accept': 'application/json',

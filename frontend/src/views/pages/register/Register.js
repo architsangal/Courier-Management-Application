@@ -63,7 +63,7 @@ const Register = () => {
     formData.append("userLastName", lastName);
     formData.append("userPassword", password);
     axios({
-      url: "http://localhost:9090/registerNewUser",
+      url: process.env.REACT_APP_BACKEND_API_URL+"registerNewUser",
       method: "POST",
       headers: {
         Accept: "application/json",

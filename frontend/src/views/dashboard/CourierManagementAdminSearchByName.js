@@ -74,7 +74,7 @@ const Dashboard = () => {
   const submitted = () => {
 
     // Adding files to the formdata
-    axios.get("http://localhost:9090/getCouriersByName/", 
+    axios.get(process.env.REACT_APP_BACKEND_API_URL+"getCouriersByName/", 
     {
       params: { owner: rollNumber },
       headers : {
