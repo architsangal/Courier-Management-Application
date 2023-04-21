@@ -42,11 +42,12 @@ const Login = () => {
   };
 
   const submitted = () => {
+    console.log(process.env.REACT_APP_BACKEND_API_URL);
     let formData = new FormData();
     formData.append("userName", username);
     formData.append("userPassword", password);
     axios({
-      url: "http://localhost:9090/authenticate",
+      url: process.env.REACT_APP_BACKEND_API_URL+"authenticate",
       method: "POST",
       headers: {
         Accept: "application/json",

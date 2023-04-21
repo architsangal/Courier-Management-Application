@@ -113,7 +113,7 @@ const Dashboard = () => {
     let formData = new FormData();
     formData.append("courierID",cid);
     axios({
-      url: "http://localhost:9090/deleteCourier",
+      url: process.env.REACT_APP_BACKEND_API_URL+"deleteCourier",
       method: "POST",
       headers: {
         'Accept': 'application/json',

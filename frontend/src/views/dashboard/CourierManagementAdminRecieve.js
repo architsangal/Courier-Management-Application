@@ -118,7 +118,7 @@ const Dashboard = () => {
     formData.append("deliverTime",time);
     formData.append("receiverRollNo",username);
     axios({
-      url: "http://localhost:9090/updateCourier",
+      url: process.env.REACT_APP_BACKEND_API_URL+"updateCourier",
       method: "POST",
       headers: {
         'Accept': 'application/json',
