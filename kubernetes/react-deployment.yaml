@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react
+spec:
+  selector:
+    matchLabels:
+      app: react
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: react
+    spec:
+      containers:
+        - name: react
+          image: architsangal/courier_react:latest
+          ports:
+            - containerPort: 80
+          # env:   # Setting Environmental Variables
+          #   - name: REACT_APP_BACKEND_API_URL   # Setting Database host address
+          #     value: http://springboot-service:9090/
+---
+# Define a 'Service' To Expose the application
+apiVersion: v1
+kind: Service
+metadata:
+  name: react
+spec:
+  ports:
+    - protocol: "TCP"
+      port: 80    # Port inside the cluster
+      targetPort: 80  # Port exposed to the outside
+      nodePort: 30100
+  selector:
+    app: react
+  type: LoadBalancer
