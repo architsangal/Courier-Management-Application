@@ -38,6 +38,7 @@ spec:
     - protocol: "TCP"
       port: 9090    # Port inside the cluster
       targetPort: 9090  # Port exposed to the outside
+      nodePort: 30200
   selector:
     app: springboot
-  type: NodePort
+  type: LoadBalancer
