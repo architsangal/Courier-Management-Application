@@ -75,7 +75,7 @@ const Dashboard = () => {
     // Adding files to the formdata
     axios({
       // Endpoint to send files
-      url: "http://localhost:9090/getAllCouriers",
+      url: process.env.REACT_APP_BACKEND_API_URL+"getAllCouriers",
       method: "GET",
       headers: {
         // Add any auth token here
