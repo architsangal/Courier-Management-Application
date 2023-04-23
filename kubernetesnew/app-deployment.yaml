@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot
+spec:
+  selector:
+    matchLabels:
+      app: springboot
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: springboot
+    spec:
+      containers:
+        - name: springboot
+          image: architsangal/courier_spring_boot:latest
+          ports:
+            - containerPort: 9090
+          env:   # Setting Environmental Variables
+            - name: DB_HOST   # Setting Database host address
+              value: mysql
+            - name: DB_NAME  # Setting Database name
+              value: fleetdb
+            - name: DB_USERNAME  # Setting Database username
+              value: root
+            - name: DB_PASSWORD # Setting Database password
+              value: root
+---
+# Define a 'Service' To Expose the application
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot
+spec:
+  ports:
+    - protocol: "TCP"
+      port: 9090    # Port inside the cluster
+      targetPort: 9090  # Port exposed to the outside
+      nodePort: 30200
+  selector:
+    app: springboot
+  type: LoadBalancer
