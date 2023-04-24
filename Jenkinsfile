@@ -26,7 +26,7 @@ pipeline
             {
                 dir("frontend/")
                 {
-                    sh "npm run build"
+                    sh "npm install"
                 }
             }
         }
