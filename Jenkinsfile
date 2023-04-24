@@ -26,6 +26,7 @@ pipeline
             {
                 sh "ls"
             }
+        }
         // stage('Build Code')
         // {
         //     steps
