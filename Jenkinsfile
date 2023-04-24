@@ -20,7 +20,7 @@ pipeline
                 git branch: 'main', url: 'https://github.com/architsangal/Courier-Management-Application.git'
             }
         }
-        stage('frontend docker')
+        stage('Frontend Docker Image Build')
         {
             steps
             {
@@ -29,11 +29,10 @@ pipeline
                     sh "npm install"
                     sh "npm run build"
                     sh "docker build -t architsangal/courier_react:latest ."
-                    // sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 }
             }
         }
-        stage('DockerHub Image Push')
+        stage('Frontend DockerHub Image Push')
         {
             steps
             {
@@ -42,6 +41,31 @@ pipeline
                     docker.withRegistry('', registryCredential)
                     {
                         sh "docker push architsangal/courier_react:latest"
+                    }
+                }
+            }
+        }
+        stage('Backend Docker Image Build')
+        {
+            steps
+            {
+                dir("backend/")
+                {
+                    sh "ls"
+                    // sh "npm run build"
+                    // sh "docker build -t architsangal/courier_react:latest ."
+                }
+            }
+        }
+        stage('Frontend DockerHub Image Push')
+        {
+            steps
+            {
+                script
+                {
+                    docker.withRegistry('', registryCredential)
+                    {
+                        // sh "docker push architsangal/courier_react:latest"
                     }
                 }
             }
