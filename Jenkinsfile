@@ -32,19 +32,19 @@ pipeline
                     // sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 }
             }
-            // stage('DockerHub Image Push')
-            // {
-                steps
+        }
+        stage('DockerHub Image Push')
+        {
+            steps
+            {
+                script
                 {
-                    script
+                    docker.withRegistry('', registryCredential)
                     {
-                        docker.withRegistry('', registryCredential)
-                        {
-                           sh "docker push architsangal/courier_react:latest"
-                        }
+                        sh "docker push architsangal/courier_react:latest"
                     }
                 }
-            // }
+            }
         }
         // stage('Build Code')
         // {
