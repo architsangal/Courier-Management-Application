@@ -150,45 +150,15 @@ pipeline
         //         }
         //     }
         // }
-        // stage('Docker Image Build')
-        // {
-        //     steps
-        //     {
-        //         script
-        //         {
-        //             dockerImage = docker.build(registry + ":latest")
-        //         }
-        //     }
-        // }
-        // stage('DockerHub Image Push')
-        // {
-        //     steps
-        //     {
-        //         script
-        //         {
-        //             docker.withRegistry('', registryCredential)
-        //             {
-        //                 dockerImage.push()
-        //             }
-        //         }
-        //     }
-        // }
-        // stage('Cleaning Up')
-        // {
-        //     steps
-        //     {
-        //         sh "docker rmi $registry:latest" 
-        //     }
-        // }
-        // stage('Ansible Deployment')
-        // {
-        //     steps
-        //     {
-        //         ansiblePlaybook colorized: true,
-        //         installation: 'Ansible',
-        //         inventory: 'inventory',
-        //         playbook: 'playbook.yml'
-        //     }
-        // }
+        stage('Ansible Deployment')
+        {
+            steps
+            {
+                ansiblePlaybook colorized: true,
+                installation: 'Ansible',
+                inventory: 'inventory',
+                playbook: 'playbook.yml'
+            }
+        }
     }
 }

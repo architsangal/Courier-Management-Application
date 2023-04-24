@@ -1,0 +1,13 @@
+---
+- name: Pull Docker Image
+  hosts: all
+  tasks:
+    # - name: pull an image
+    #   docker_image:
+    #     name: architsangal/speminiproject:latest
+    #     source: pull
+    # - name: Freeing the common resources
+    #   shell: docker ps -aq --filter publish="2023" | xargs docker stop | xargs docker rm
+    #   shell: docker ps -aq --filter name="calculator" | xargs docker stop | xargs docker rm
+    - name: Running Docker Image Using a Container
+      shell:  kubectl version --output=yaml
