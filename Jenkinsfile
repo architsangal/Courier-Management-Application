@@ -27,6 +27,8 @@ pipeline
                 dir("frontend/")
                 {
                     sh "npm install"
+                    sh "npm run build"
+                    sh "docker build -t architsangal/courier_react:latest ."
                 }
             }
         }
