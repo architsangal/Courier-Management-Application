@@ -29,11 +29,20 @@ pipeline
                     sh "npm install"
                     sh "npm run build"
                     sh "docker build -t architsangal/courier_react:latest ."
-                    docker.withRegistry('', registryCredential)
-                    {
-                        sh "docker push architsangal/courier_react:latest"
-                    }
                     // sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                }
+            }
+            stage('DockerHub Image Push')
+            {
+                steps
+                {
+                    script
+                    {
+                        docker.withRegistry('', registryCredential)
+                        {
+                           sh "docker push architsangal/courier_react:latest"
+                        }
+                    }
                 }
             }
         }
