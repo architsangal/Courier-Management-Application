@@ -11,3 +11,4 @@
     - name: Minikube Tunneling
       shell: minikube tunnel &
     - name: checking contents
+      shell: ls
