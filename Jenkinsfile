@@ -32,8 +32,8 @@ pipeline
                     // sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 }
             }
-            stage('DockerHub Image Push')
-            {
+            // stage('DockerHub Image Push')
+            // {
                 steps
                 {
                     script
@@ -44,7 +44,7 @@ pipeline
                         }
                     }
                 }
-            }
+            // }
         }
         // stage('Build Code')
         // {
