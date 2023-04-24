@@ -11,7 +11,7 @@ docker build -t architsangal/courier_react:latest .
 docker push architsangal/courier_react:latest
 
 mvn clean install
-docker build -t architsangal/courier_react:latest .
+docker build -t architsangal/courier_spring_boot:latest .
 docker push architsangal/courier_spring_boot:latest
 
 http://courier-management/temp/?#/login

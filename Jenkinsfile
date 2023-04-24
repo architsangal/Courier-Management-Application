@@ -51,9 +51,8 @@ pipeline
             {
                 dir("backend/")
                 {
-                    sh "ls"
-                    // sh "npm run build"
-                    // sh "docker build -t architsangal/courier_react:latest ."
+                    sh "mvn clean install"
+                    sh "docker build -t architsangal/courier_spring_boot:latest ."
                 }
             }
         }
@@ -65,7 +64,7 @@ pipeline
                 {
                     docker.withRegistry('', registryCredential)
                     {
-                        // sh "docker push architsangal/courier_react:latest"
+                        sh "docker push architsangal/courier_spring_boot:latest"
                     }
                 }
             }
