@@ -57,7 +57,7 @@ pipeline
                 }
             }
         }
-        stage('Frontend DockerHub Image Push')
+        stage('Backend DockerHub Image Push')
         {
             steps
             {
