@@ -20,6 +20,12 @@ pipeline
                 git branch: 'main', url: 'https://github.com/architsangal/Courier-Management-Application.git'
             }
         }
+        stage('Build Code')
+        {
+            steps
+            {
+                sh "ls"
+            }
         // stage('Build Code')
         // {
         //     steps
