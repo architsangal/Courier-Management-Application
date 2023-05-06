@@ -110,16 +110,14 @@ const Dashboard = () => {
     console.log(
       value.$d.toTimeString().substring(0, value.$d.toTimeString().indexOf(" "))
     );
-    setDate(value.$d.toJSON().substring(0, value.$d.toJSON().indexOf("T")));
-    setTime(
-      value.$d.toTimeString().substring(0, value.$d.toTimeString().indexOf(" "))
-    );
+    // setDate();
+    // setTime(    );
 
     let formData = new FormData();
     formData.append("owner",firstName+" "+lastName);
     formData.append("courierCompany",company);
-    formData.append("arrivalDate",date);
-    formData.append("arrivalTime",time);
+    formData.append("arrivalDate",value.$d.toJSON().substring(0, value.$d.toJSON().indexOf("T")));
+    formData.append("arrivalTime",value.$d.toTimeString().substring(0, value.$d.toTimeString().indexOf(" ")));
     formData.append("ownerRollNo",username);
     axios({
       url: process.env.REACT_APP_BACKEND_API_URL+"addCourier",

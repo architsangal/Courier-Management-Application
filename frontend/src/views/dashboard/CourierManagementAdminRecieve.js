@@ -111,19 +111,13 @@ const Dashboard = () => {
     console.log(
       value.$d.toTimeString().substring(0, value.$d.toTimeString().indexOf(" "))
     );
-    setDate(value.$d.toJSON().substring(0, value.$d.toJSON().indexOf("T")));
-    setTime(
-      value.$d.toTimeString().substring(0, value.$d.toTimeString().indexOf(" "))
-    );
-    // console.log(value);
-    // console.log(date);
 
     let formData = new FormData();
     formData.append("courierID", cid);
     formData.append("receiverName", firstName + " " + lastName);
     formData.append("status", "COMPLETE");
-    formData.append("deliverDate", date);
-    formData.append("deliverTime", time);
+    formData.append("deliverDate", value.$d.toJSON().substring(0, value.$d.toJSON().indexOf("T")));
+    formData.append("deliverTime", value.$d.toTimeString().substring(0, value.$d.toTimeString().indexOf(" ")));
     formData.append("receiverRollNo", username);
     axios({
       url: process.env.REACT_APP_BACKEND_API_URL + "updateCourier",
