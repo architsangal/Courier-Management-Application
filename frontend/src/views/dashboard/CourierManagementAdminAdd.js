@@ -45,17 +45,17 @@ import {
   cilInbox,
 } from "@coreui/icons";
 
-import avatar1 from "src/assets/images/avatars/1.jpg";
-import avatar2 from "src/assets/images/avatars/2.jpg";
-import avatar3 from "src/assets/images/avatars/3.jpg";
-import avatar4 from "src/assets/images/avatars/4.jpg";
-import avatar5 from "src/assets/images/avatars/5.jpg";
-import avatar6 from "src/assets/images/avatars/6.jpg";
-
-import WidgetsBrand from "../widgets/WidgetsBrand";
-import WidgetsDropdown from "../widgets/WidgetsDropdown";
+// import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import dayjs from "dayjs";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
 const Dashboard = () => {
+
+  const [value, setValue] = React.useState(dayjs("2022-04-17T15:30"));
+
   const [tableExample, setTableExample] = useState([]);
 
   const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -105,6 +105,16 @@ const Dashboard = () => {
   }
 
   const handleUpload = () => {
+
+    console.log(value.$d.toJSON().substring(0, value.$d.toJSON().indexOf("T")));
+    console.log(
+      value.$d.toTimeString().substring(0, value.$d.toTimeString().indexOf(" "))
+    );
+    setDate(value.$d.toJSON().substring(0, value.$d.toJSON().indexOf("T")));
+    setTime(
+      value.$d.toTimeString().substring(0, value.$d.toTimeString().indexOf(" "))
+    );
+
     let formData = new FormData();
     formData.append("owner",firstName+" "+lastName);
     formData.append("courierCompany",company);
@@ -163,10 +173,38 @@ const Dashboard = () => {
               </CAlert>
             </div>
 
-            <CForm onSubmit={submitted}>
-              <h1>Add a courier</h1>
+            <h1>Add a courier</h1>
               <p className="text-medium-emphasis">Enter the following details</p>
 
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={["DateTimePicker"]}>
+                        <div style={{ display: "flex", flexDirection: "row" }}>
+                          <div
+                            style={{
+                              flex: "1 1 auto",
+                            }}
+                          ></div>
+                          <div className="d-flex flex-row align-items-center justify-content-center">
+                            <DateTimePicker
+                              className="mb-3 d-flex flex-row align-items-center"
+                              value={value}
+                              onChange={(newValue) => setValue(newValue)}
+                              defaultValue={dayjs("2022-04-17T15:30")}
+                            />
+                          </div>
+                          <div
+                            style={{
+                              flex: "1 1 auto",
+                            }}
+                          ></div>
+                        </div>
+                      </DemoContainer>
+                    </LocalizationProvider>
+                    {/* Resource - https://mui.com/x/react-date-pickers/date-time-picker/ */}
+
+
+            <CForm onSubmit={submitted}>
+              
               <CInputGroup className="mb-3">
                 <CInputGroupText>
                   <CIcon icon={cilUser} />
@@ -200,30 +238,6 @@ const Dashboard = () => {
                   placeholder="Last Name"
                   value={lastName}
                   onChange={handleLastName}
-                />
-              </CInputGroup>
-
-              <CInputGroup className="mb-3">
-                <CInputGroupText>
-                  <CIcon icon={cilUser} />
-                </CInputGroupText>
-
-                <CFormInput
-                  placeholder="Date (YYYY-MM-DD)"
-                  value={date}
-                  onChange={handleDate}
-                />
-              </CInputGroup>
-
-              <CInputGroup className="mb-3">
-                <CInputGroupText>
-                  <CIcon icon={cilUser} />
-                </CInputGroupText>
-
-                <CFormInput
-                  placeholder="Time (HH:MM:SS)"
-                  value={time}
-                  onChange={handleTime}
                 />
               </CInputGroup>
 

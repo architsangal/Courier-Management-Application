@@ -45,17 +45,16 @@ import {
   cilInbox,
 } from "@coreui/icons";
 
-import avatar1 from "src/assets/images/avatars/1.jpg";
-import avatar2 from "src/assets/images/avatars/2.jpg";
-import avatar3 from "src/assets/images/avatars/3.jpg";
-import avatar4 from "src/assets/images/avatars/4.jpg";
-import avatar5 from "src/assets/images/avatars/5.jpg";
-import avatar6 from "src/assets/images/avatars/6.jpg";
-
-import WidgetsBrand from "../widgets/WidgetsBrand";
-import WidgetsDropdown from "../widgets/WidgetsDropdown";
+// import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import dayjs from "dayjs";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
 const Dashboard = () => {
+  const [value, setValue] = React.useState(dayjs("2022-04-17T15:30"));
+
   const [tableExample, setTableExample] = useState([]);
 
   const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -103,36 +102,45 @@ const Dashboard = () => {
     setCompany(event.target.value);
   };
 
-
-  const refresh = () =>
-  {
+  const refresh = () => {
     handleUpload();
-  }
+  };
 
   const handleUpload = () => {
+    console.log(value.$d.toJSON().substring(0, value.$d.toJSON().indexOf("T")));
+    console.log(
+      value.$d.toTimeString().substring(0, value.$d.toTimeString().indexOf(" "))
+    );
+    setDate(value.$d.toJSON().substring(0, value.$d.toJSON().indexOf("T")));
+    setTime(
+      value.$d.toTimeString().substring(0, value.$d.toTimeString().indexOf(" "))
+    );
+    // console.log(value);
+    // console.log(date);
+
     let formData = new FormData();
-    formData.append("courierID",cid);
-    formData.append("receiverName",firstName+" "+lastName);
-    formData.append("status","COMPLETE");
-    formData.append("deliverDate",date);
-    formData.append("deliverTime",time);
-    formData.append("receiverRollNo",username);
+    formData.append("courierID", cid);
+    formData.append("receiverName", firstName + " " + lastName);
+    formData.append("status", "COMPLETE");
+    formData.append("deliverDate", date);
+    formData.append("deliverTime", time);
+    formData.append("receiverRollNo", username);
     axios({
-      url: process.env.REACT_APP_BACKEND_API_URL+"updateCourier",
+      url: process.env.REACT_APP_BACKEND_API_URL + "updateCourier",
       method: "POST",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': "Bearer "+JSON.parse(localStorage.getItem('details')).token
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization:
+          "Bearer " + JSON.parse(localStorage.getItem("details")).token,
       },
       data: formData,
     })
-      .then((res) =>
-      {
+      .then((res) => {
         setShowAlertSuccess(true);
         setShowAlertFail(false);
       })
-      .catch((err) => { 
+      .catch((err) => {
         setShowAlertFail(true);
         setShowAlertSuccess(false);
       });
@@ -140,124 +148,133 @@ const Dashboard = () => {
 
   const submitted = () => {
     handleUpload();
-  }
+  };
 
-  return(
-  <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
-  <CContainer>
-    <CRow className="justify-content-center">
-      <CCol md={9} lg={7} xl={6}>
-        <CCard className="mx-4">
-          <CCardBody className="p-4">
-            <div className="mt-2">
-              <CAlert
-                dismissible={true}
-                color="success"
-                visible={showAlertSuccess}
-              >
-                Courier Receiver Info Updated!
-              </CAlert>
-            </div>
+  return (
+    <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+      <CContainer>
+        <CRow className="justify-content-center">
+          <CCol md={9} lg={7} xl={6}>
+            <CCard className="mx-4">
+              <CCardBody className="p-4">
+                <div className="mt-2">
+                  <CAlert
+                    dismissible={true}
+                    color="success"
+                    visible={showAlertSuccess}
+                  >
+                    Courier Receiver Info Updated!
+                  </CAlert>
+                </div>
 
-            <div className="mt-2">
-              <CAlert
-                dismissible={true}
-                color="danger"
-                visible={showAlertFail}
-              >
-                Courier Update Failed!
-              </CAlert>
-            </div>
+                <div className="mt-2">
+                  <CAlert
+                    dismissible={true}
+                    color="danger"
+                    visible={showAlertFail}
+                  >
+                    Courier Update Failed!
+                  </CAlert>
+                </div>
 
-            <CForm onSubmit={submitted}>
-              <h1>Reciever Info Update</h1>
-              <p className="text-medium-emphasis">Enter the following details</p>
+                <h1>Reciever Info Update</h1>
+                  <p className="text-medium-emphasis">
+                    Enter the following details
+                  </p>
 
-              <CInputGroup className="mb-3">
-                <CInputGroupText>
-                  <CIcon icon={cilUser} />
-                </CInputGroupText>
-                <CFormInput
-                  placeholder="Courier ID"
-                  autoComplete="cid"
-                  value={cid}
-                  onChange={handleCID}
-                />
-              </CInputGroup>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={["DateTimePicker"]}>
+                        {/* <DemoItem> */}
+                        {/* label="Responsive variant"> */}
+                        <div style={{ display: "flex", flexDirection: "row" }}>
+                          <div
+                            style={{
+                              flex: "1 1 auto",
+                            }}
+                          ></div>
+                          <div className="d-flex flex-row align-items-center justify-content-center">
+                            <DateTimePicker
+                              className="mb-3 d-flex flex-row align-items-center"
+                              value={value}
+                              onChange={(newValue) => setValue(newValue)}
+                              defaultValue={dayjs("2022-04-17T15:30")}
+                            />
+                          </div>
+                          <div
+                            style={{
+                              flex: "1 1 auto",
+                            }}
+                          ></div>
+                        </div>
+                        {/* </DemoItem> */}
+                      </DemoContainer>
+                    </LocalizationProvider>
+                    {/* Resource - https://mui.com/x/react-date-pickers/date-time-picker/ */}
 
-              <CInputGroup className="mb-3">
-                <CInputGroupText>
-                  <CIcon icon={cilUser} />
-                </CInputGroupText>
-                <CFormInput
-                  placeholder="Reciever Roll Number"
-                  autoComplete="username"
-                  value={username}
-                  onChange={handleUserName}
-                />
-              </CInputGroup>
+                <CForm onSubmit={submitted}>
 
-              <CInputGroup className="mb-3">
-                <CInputGroupText>
-                  <CIcon icon={cilUser} />
-                </CInputGroupText>
+                  <CInputGroup className="mb-3">
+                    <CInputGroupText>
+                      <CIcon icon={cilUser} />
+                    </CInputGroupText>
+                    <CFormInput
+                      placeholder="Courier ID"
+                      autoComplete="cid"
+                      value={cid}
+                      onChange={handleCID}
+                    />
+                  </CInputGroup>
 
-                <CFormInput
-                  placeholder="First Name"
-                  value={firstName}
-                  onChange={handleFirstName}
-                />
-              </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CInputGroupText>
+                      <CIcon icon={cilUser} />
+                    </CInputGroupText>
+                    <CFormInput
+                      placeholder="Reciever Roll Number"
+                      autoComplete="username"
+                      value={username}
+                      onChange={handleUserName}
+                    />
+                  </CInputGroup>
 
-              <CInputGroup className="mb-3">
-                <CInputGroupText>
-                  <CIcon icon={cilUser} />
-                </CInputGroupText>
+                  <CInputGroup className="mb-3">
+                    <CInputGroupText>
+                      <CIcon icon={cilUser} />
+                    </CInputGroupText>
 
-                <CFormInput
-                  placeholder="Last Name"
-                  value={lastName}
-                  onChange={handleLastName}
-                />
-              </CInputGroup>
+                    <CFormInput
+                      placeholder="First Name"
+                      value={firstName}
+                      onChange={handleFirstName}
+                    />
+                  </CInputGroup>
 
-              <CInputGroup className="mb-3">
-                <CInputGroupText>
-                  <CIcon icon={cilUser} />
-                </CInputGroupText>
+                  <CInputGroup className="mb-3">
+                    <CInputGroupText>
+                      <CIcon icon={cilUser} />
+                    </CInputGroupText>
 
-                <CFormInput
-                  placeholder="Date (YYYY-MM-DD)"
-                  value={date}
-                  onChange={handleDate}
-                />
-              </CInputGroup>
+                    <CFormInput
+                      placeholder="Last Name"
+                      value={lastName}
+                      onChange={handleLastName}
+                    />
+                  </CInputGroup>
 
-              <CInputGroup className="mb-3">
-                <CInputGroupText>
-                  <CIcon icon={cilUser} />
-                </CInputGroupText>
 
-                <CFormInput
-                  placeholder="Time (HH:MM:SS)"
-                  value={time}
-                  onChange={handleTime}
-                />
-              </CInputGroup>
-
-              <div className="d-grid">
-                <CButton type="submit" color="success">
-                  Recieve Courier
-                </CButton>
-              </div>
-            </CForm>
-          </CCardBody>
-        </CCard>
-      </CCol>
-    </CRow>
-  </CContainer>
-</div>
-);
+                  <div className="d-grid">
+                    <CButton type="submit" color="success">
+                      Recieve Courier
+                    </CButton>
+                  </div>
+                </CForm>
+              </CCardBody>
+            </CCard>
+          </CCol>
+        </CRow>
+      </CContainer>
+    </div>
+  );
 };
 
 export default Dashboard;
