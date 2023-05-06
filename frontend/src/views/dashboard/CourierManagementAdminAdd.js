@@ -110,9 +110,6 @@ const Dashboard = () => {
     console.log(
       value.$d.toTimeString().substring(0, value.$d.toTimeString().indexOf(" "))
     );
-    // setDate();
-    // setTime(    );
-
     let formData = new FormData();
     formData.append("owner",firstName+" "+lastName);
     formData.append("courierCompany",company);
