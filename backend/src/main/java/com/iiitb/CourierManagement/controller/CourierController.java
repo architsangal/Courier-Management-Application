@@ -10,24 +10,24 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
 
-//import org.apache.logging.log4j.LogManager;
-//import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 @RestController
 @CrossOrigin
 public class CourierController {
 
-    Logger logger = LoggerFactory.getLogger(CourierController.class);
+//    Logger logger = LoggerFactory.getLogger(CourierController.class);
 
-//    private static Logger logger;
-//
-//    @PostConstruct
-//    public void initLogger() {
-//        logger = LogManager.getLogger(CourierController.class);
-//    }
+    private static Logger logger;
+
+    @PostConstruct
+    public void initLogger() {
+        logger = LogManager.getLogger(CourierController.class);
+    }
 
     @Autowired
     private CourierService courierService;
@@ -35,7 +35,7 @@ public class CourierController {
     @PostMapping({"/addCourier"})
     @PreAuthorize("hasRole('Admin')")
     public Courier addCourier(@RequestBody Courier courier) {
-        logger.trace("FATAL ERROR");
+        logger.info("FATAL ERROR");
         return courierService.addCourier(courier);
     }
 
