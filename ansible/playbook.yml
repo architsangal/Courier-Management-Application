@@ -1,8 +1,83 @@
+# https://www.digitalocean.com/community/tutorials/how-to-use-ansible-to-install-and-set-up-docker-on-ubuntu-20-04
 ---
-- name: Transfer and Execute JAR File
+- name: Installing Dependencies
   hosts: ubuntu
   tasks:
     - name: Install OpenJDK 8
       apt:
         name: openjdk-8-jdk
         state: present
+    - name: Install aptitude
+      apt:
+        name: aptitude
+        state: latest
+        update_cache: true
+    - name: Install required system packages
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: latest
+        update_cache: true
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+    - name: Update apt and install docker-ce
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: true
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+      
+    # No required always there with installation of docker
+    # - name: Docker sudo setup
+    #   command: sudo groupadd docker
+    - name: Docker sudo setup
+      command: sudo usermod -aG docker $USER
+    # No required always there with installation of docker
+    # - name: Docker sudo setup
+    #   command: newgrp docker
+    
+    - name: Check if minikube binary file exists
+      stat:
+        path: "./minikube-linux-amd64"
+      register: file_stat
+    - name: Download file if it doesn't exist
+      get_url:
+        url: "https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64"
+        dest: "./"
+      when: not file_stat.stat.exists
+    - name: Check if Minikube is installed
+      stat:
+        path: "/usr/local/bin/minikube"
+      register: app_stat
+    - name: Install Minikube
+      command: sudo install minikube-linux-amd64 /usr/local/bin/minikube
+      when: not app_stat.stat.exists
+
+    - name: Check Minikube status
+      become: false
+      command: minikube status
+      register: minikube_status
+      changed_when: false
+      failed_when: false
+    # - name: Display Minikube status
+    #   debug:
+    #     var: minikube_status.stdout_lines
+    - name: Start Minikube
+      become: false
+      command: minikube start --cpus 4 --memory 8192 
+      when: "'Running' not in minikube_status.stdout"
+    
