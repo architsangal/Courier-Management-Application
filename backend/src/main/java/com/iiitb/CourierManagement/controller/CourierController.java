@@ -6,12 +6,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
+
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @CrossOrigin
 public class CourierController {
+
+    Logger logger = LoggerFactory.getLogger(CourierController.class);
+
+//    private static Logger logger;
+//
+//    @PostConstruct
+//    public void initLogger() {
+//        logger = LogManager.getLogger(CourierController.class);
+//    }
 
     @Autowired
     private CourierService courierService;
@@ -19,6 +35,7 @@ public class CourierController {
     @PostMapping({"/addCourier"})
     @PreAuthorize("hasRole('Admin')")
     public Courier addCourier(@RequestBody Courier courier) {
+        logger.trace("FATAL ERROR");
         return courierService.addCourier(courier);
     }
 
