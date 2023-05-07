@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 @CrossOrigin
 public class CourierController {
 
-    Logger logger = LoggerFactory.getLogger(CourierController.class);
+    private Logger logger = LoggerFactory.getLogger(CourierController.class);
 
 //    private static Logger logger = LogManager.getLogger(CourierController.class);
 
@@ -40,10 +40,10 @@ public class CourierController {
         logger.info("[TYPE] incoming"+" [METHOD] POST"+ " [API_NAME] addCourier"+ " [CALLER] "+uname+ " [STATUS] ACCEPT");
         Courier cour = courierService.addCourier(courier);
         if(cour != null) {
-            logger.info("[TYPE] incoming"+" [METHOD] POST"+ " [API_NAME] addCourier"+ " [CALLER] "+uname+ " [STATUS] SUCCESS");
+            logger.info("[TYPE] outgoing"+" [METHOD] POST"+ " [API_NAME] addCourier"+ " [CALLER] "+uname+ " [STATUS] SUCCESS");
         }
         else {
-            logger.info("[TYPE] incoming"+" [METHOD] POST"+ " [API_NAME] addCourier"+ " [CALLER] "+uname+ " [STATUS] FAILURE");
+            logger.info("[TYPE] outgoing"+" [METHOD] POST"+ " [API_NAME] addCourier"+ " [CALLER] "+uname+ " [STATUS] FAILURE");
         }
         return cour;
     }
@@ -56,10 +56,10 @@ public class CourierController {
         logger.info("[TYPE] incoming"+" [METHOD] POST"+ " [API_NAME] updateCourier"+ " [CALLER] "+uname+ " [STATUS] ACCEPT");
         Courier cour = courierService.updateCourier(courier);
         if(cour != null) {
-            logger.info("[TYPE] incoming"+" [METHOD] POST"+ " [API_NAME] updateCourier"+ " [CALLER] "+uname+ " [STATUS] SUCCESS");
+            logger.info("[TYPE] outgoing"+" [METHOD] POST"+ " [API_NAME] updateCourier"+ " [CALLER] "+uname+ " [STATUS] SUCCESS");
         }
         else {
-            logger.info("[TYPE] incoming"+" [METHOD] POST"+ " [API_NAME] updateCourier"+ " [CALLER] "+uname+ " [STATUS] FAILURE");
+            logger.info("[TYPE] outgoing"+" [METHOD] POST"+ " [API_NAME] updateCourier"+ " [CALLER] "+uname+ " [STATUS] FAILURE");
         }
         return cour;
     }
@@ -73,7 +73,7 @@ public class CourierController {
 
         courierService.deleteCourier(courier);
 
-        logger.info("[TYPE] incoming"+" [METHOD] POST"+ " [API_NAME] deleteCourier"+ " [CALLER] "+uname+ " [STATUS] SUCCESS");
+        logger.info("[TYPE] outgoing"+" [METHOD] POST"+ " [API_NAME] deleteCourier"+ " [CALLER] "+uname+ " [STATUS] SUCCESS");
     }
 
     @GetMapping({"/getMyCouriers"})
@@ -85,7 +85,7 @@ public class CourierController {
 
         Set<Courier> couriers = courierService.getMyCouriers(jwtToken);
 
-        logger.info("[TYPE] incoming"+" [METHOD] GET"+ " [API_NAME] getMyCouriers"+ " [CALLER] "+uname+ " [STATUS] SUCCESS");
+        logger.info("[TYPE] outgoing"+" [METHOD] GET"+ " [API_NAME] getMyCouriers"+ " [CALLER] "+uname+ " [STATUS] SUCCESS");
         return couriers;
     }
 
@@ -98,7 +98,7 @@ public class CourierController {
 
         Set<Courier> couriers = courierService.getAllCouriers();
 
-        logger.info("[TYPE] incoming"+" [METHOD] GET"+ " [API_NAME] getAllCouriers"+ " [CALLER] "+uname+ " [STATUS] SUCCESS");
+        logger.info("[TYPE] outgoing"+" [METHOD] GET"+ " [API_NAME] getAllCouriers"+ " [CALLER] "+uname+ " [STATUS] SUCCESS");
         return couriers;
     }
 
@@ -111,7 +111,7 @@ public class CourierController {
 
         Set<Courier> couriers = courierService.getCouriersByRollNo(ownerRollNo);
 
-        logger.info("[TYPE] incoming"+" [METHOD] GET"+ " [API_NAME] getCouriersByRollNo"+ " [CALLER] "+uname+ " [STATUS] SUCCESS");
+        logger.info("[TYPE] outgoing"+" [METHOD] GET"+ " [API_NAME] getCouriersByRollNo"+ " [CALLER] "+uname+ " [STATUS] SUCCESS");
         return couriers;
     }
 
@@ -124,7 +124,7 @@ public class CourierController {
 
         Set<Courier> couriers = courierService.getCouriersByName(owner);
 
-        logger.info("[TYPE] incoming"+" [METHOD] GET"+ " [API_NAME] getCouriersByName"+ " [CALLER] "+uname+ " [STATUS] SUCCESS");
+        logger.info("[TYPE] outgoing"+" [METHOD] GET"+ " [API_NAME] getCouriersByName"+ " [CALLER] "+uname+ " [STATUS] SUCCESS");
         return couriers;
     }
 
