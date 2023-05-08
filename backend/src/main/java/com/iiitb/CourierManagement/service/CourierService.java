@@ -32,9 +32,11 @@ public class CourierService {
         String uname = courier.getOwnerRollNo();
         if(uname!=null) {
             User user = userDao.findByUserName(uname);
-            emailSenderService.sendSimpleEmail(user.getMailID(),
-                                                addCourierMailBody(courier),
-                                                "Arrival of new courier!");
+            if(user!=null) {
+                emailSenderService.sendSimpleEmail(user.getMailID(),
+                        addCourierMailBody(courier),
+                        "Arrival of new courier!");
+            }
         }
         return courierDao.save(courier);
     }
@@ -150,9 +152,11 @@ public class CourierService {
             String uname = cour.getOwnerRollNo();
             if(uname!=null) {
                 User user = userDao.findByUserName(uname);
-                emailSenderService.sendSimpleEmail(user.getMailID(),
-                        updateCourierMailBody(cour),
-                        "Courier Delivered!");
+                if(user!=null) {
+                    emailSenderService.sendSimpleEmail(user.getMailID(),
+                            updateCourierMailBody(cour),
+                            "Courier Delivered!");
+                }
             }
             return courierDao.save(cour);
         }
