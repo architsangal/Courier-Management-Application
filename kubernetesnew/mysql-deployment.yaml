@@ -56,9 +56,15 @@ spec:
           imagePullPolicy: "IfNotPresent"
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: root
+              valueFrom:
+                secretKeyRef:
+                  name: mysecret
+                  key: Root_Pass
             - name: MYSQL_DATABASE
-              value: fleetdb
+              valueFrom:
+                configMapKeyRef:
+                  name: configpara
+                  key: DATABASE_NAME
           ports:
             - containerPort: 3306
               name: mysql

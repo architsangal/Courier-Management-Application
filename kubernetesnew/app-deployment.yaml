@@ -22,11 +22,17 @@ spec:
             - name: DB_HOST   # Setting Database host address
               value: mysql
             - name: DB_NAME  # Setting Database name
-              value: fleetdb
+              valueFrom:
+                configMapKeyRef:
+                  name: configpara
+                  key: DATABASE_NAME
             - name: DB_USERNAME  # Setting Database username
               value: root
             - name: DB_PASSWORD # Setting Database password
-              value: root
+              valueFrom:
+                secretKeyRef:
+                  name: mysecret
+                  key: Root_Pass
 ---
 # Define a 'Service' To Expose the application
 apiVersion: v1

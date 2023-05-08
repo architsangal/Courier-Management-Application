@@ -76,6 +76,12 @@
     - name: Debugging Logs
       debug:
         var: ls
+    - name: Setting Config and Secrets
+      shell: |
+        kubectl apply -f .
+        rm configFileAndSecrets.yaml
+      ignore_errors: true
+
     
     - name: Applying K8s Command in Repository
       shell: |
