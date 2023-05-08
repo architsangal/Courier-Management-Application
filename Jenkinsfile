@@ -87,7 +87,7 @@ pipeline
                 {
                     ansiblePlaybook colorized: true,
                     installation: 'Ansible',
-                    inventory: 'inventory',
+                    // inventory: 'inventory',
                     playbook: 'playbook.yml'
                 }
             }
