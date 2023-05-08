@@ -21,55 +21,55 @@ pipeline
                 git branch: 'main', url: 'https://github.com/architsangal/Courier-Management-Application.git'
             }
         }
-        stage('Frontend Docker Image Build')
-        {
-            steps
-            {
-                dir("frontend/")
-                {
-                    sh "npm install"
-                    sh "npm run build"
-                    sh "docker build -t architsangal/courier_react:latest ."
-                }
-            }
-        }
-        stage('Frontend DockerHub Image Push')
-        {
-            steps
-            {
-                script
-                {
-                    docker.withRegistry('', registryCredential)
-                    {
-                        sh "docker push architsangal/courier_react:latest"
-                    }
-                }
-            }
-        }
-        stage('Backend Docker Image Build')
-        {
-            steps
-            {
-                dir("backend/")
-                {
-                    sh "mvn clean install"
-                    sh "docker build -t architsangal/courier_spring_boot:latest ."
-                }
-            }
-        }
-        stage('Backend DockerHub Image Push')
-        {
-            steps
-            {
-                script
-                {
-                    docker.withRegistry('', registryCredential)
-                    {
-                        sh "docker push architsangal/courier_spring_boot:latest"
-                    }
-                }
-            }
-        }
+        // stage('Frontend Docker Image Build')
+        // {
+        //     steps
+        //     {
+        //         dir("frontend/")
+        //         {
+        //             sh "npm install"
+        //             sh "npm run build"
+        //             sh "docker build -t architsangal/courier_react:latest ."
+        //         }
+        //     }
+        // }
+        // stage('Frontend DockerHub Image Push')
+        // {
+        //     steps
+        //     {
+        //         script
+        //         {
+        //             docker.withRegistry('', registryCredential)
+        //             {
+        //                 sh "docker push architsangal/courier_react:latest"
+        //             }
+        //         }
+        //     }
+        // }
+        // stage('Backend Docker Image Build')
+        // {
+        //     steps
+        //     {
+        //         dir("backend/")
+        //         {
+        //             sh "mvn clean install"
+        //             sh "docker build -t architsangal/courier_spring_boot:latest ."
+        //         }
+        //     }
+        // }
+        // stage('Backend DockerHub Image Push')
+        // {
+        //     steps
+        //     {
+        //         script
+        //         {
+        //             docker.withRegistry('', registryCredential)
+        //             {
+        //                 sh "docker push architsangal/courier_spring_boot:latest"
+        //             }
+        //         }
+        //     }
+        // }
         stage('Ansible Deployment')
         {
             steps
