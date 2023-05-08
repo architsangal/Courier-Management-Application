@@ -18,7 +18,10 @@ docker push architsangal/courier_spring_boot:latest
 - http://courier-management/temp/?#/login
 - http://springboot.com/api/
 
-
+Prometheus Grafana
+http://localhost:3000/login
+- username: admin
+- password: prom-operator
 
 In case MySQL in not working in local system:
 
