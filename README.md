@@ -32,3 +32,8 @@ $ sudo pkill mysqld # (multiple times)
 $ cd /usr/local/mysql/bin
 $ sudo mysqld_safe --skip-grant-tables --skip-networking # should give Starting mysqld daemon with databases from /opt/homebrew/var/mysql
 ```
+
+GROK
+```
+%{TIMESTAMP_ISO8601:timestamp} \[%{LOGLEVEL:level}\] %{DATA:class} \[%{DATA:thread}\] \[%{WORD:type}\] %{WORD:type_val} \[%{WORD:method}\] %{WORD:method_val} \[%{WORD:apiName}\] %{WORD:apiName_val} \[%{WORD:caller}\] %{WORD:caller_val} \[%{WORD:status}\] %{WORD:status_val}
+```
