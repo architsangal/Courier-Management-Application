@@ -27,6 +27,7 @@ public class UserController {
         userService.initRoleAndUser();
     }
 
+
     private Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping({"/registerNewUser"})
@@ -34,6 +35,24 @@ public class UserController {
         logger.info("[TYPE] incoming"+" [METHOD] POST"+ " [API_NAME] registerNewUser"+ " [CALLER] "+user.getUserName()+ " [STATUS] ACCEPT");
         User u = userService.registerNewUser(user);
         logger.info("[TYPE] outgoing"+" [METHOD] POST"+ " [API_NAME] registerNewUser"+ " [CALLER] "+user.getUserName()+ " [STATUS] SUCCESS");
+        return u;
+    }
+
+    @PostMapping({"/verifyMail"})
+    public User verifyMail(@RequestParam String mailId, @RequestParam String OTP) {
+        User u = userService.verifyMail(mailId, OTP);
+        return u;
+    }
+
+    @PostMapping({"/forgotPasswordOTP"})
+    public User forgotPasswordOTP(@RequestParam String mailId) {
+        User u = userService.forgotPassOTP(mailId);
+        return u;
+    }
+
+    @PostMapping({"/resetPassword"})
+    public User resetPassword(@RequestBody User user) {
+        User u = userService.resetPassword(user);
         return u;
     }
 

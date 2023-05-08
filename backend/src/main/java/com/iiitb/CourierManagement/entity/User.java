@@ -1,5 +1,7 @@
 package com.iiitb.CourierManagement.entity;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -22,6 +24,36 @@ public class User {
             }
     )
     private Set<Role> role;
+
+    @NotNull
+    @Column(unique=true)
+    private String mailID;
+    private String status;
+    private String OTP;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getOTP() {
+        return OTP;
+    }
+
+    public void setOTP(String OTP) {
+        this.OTP = OTP;
+    }
+
+    public String getMailID() {
+        return mailID;
+    }
+
+    public void setMailID(String mailID) {
+        this.mailID = mailID;
+    }
 
     public String getUserName() {
         return userName;
