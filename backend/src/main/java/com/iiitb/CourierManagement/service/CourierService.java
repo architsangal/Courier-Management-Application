@@ -1,7 +1,9 @@
 package com.iiitb.CourierManagement.service;
 
 import com.iiitb.CourierManagement.dao.CourierDao;
+import com.iiitb.CourierManagement.dao.UserDao;
 import com.iiitb.CourierManagement.entity.Courier;
+import com.iiitb.CourierManagement.entity.User;
 import com.iiitb.CourierManagement.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +20,89 @@ public class CourierService {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private EmailSenderService emailSenderService;
+
+    @Autowired
+    private UserDao userDao;
+
+
     public Courier addCourier(Courier courier) {
         courier.setStatus("ACTIVE");
+        String uname = courier.getOwnerRollNo();
+        if(uname!=null) {
+            User user = userDao.findByUserName(uname);
+            emailSenderService.sendSimpleEmail(user.getMailID(),
+                                                addCourierMailBody(courier),
+                                                "Arrival of new courier!");
+        }
         return courierDao.save(courier);
+    }
+
+    public String addCourierMailBody(Courier courier) {
+        String body = "New courier has arrived for you.\n\n";
+        body += "Courier details:\n\n";
+        if(courier.getOwner()!=null) {
+            body += "Owner: "+courier.getOwner()+"\n";
+        }
+
+        if(courier.getArrivalDate() !=null) {
+            body += "Arrival Date: "+courier.getArrivalDate()+"\n";
+        }
+
+        if(courier.getArrivalTime()!=null) {
+            body += "Arrival Time: "+courier.getArrivalTime()+"\n";
+        }
+
+        if(courier.getOwnerRollNo()!=null) {
+            body += "Owner RollNo: "+courier.getOwnerRollNo()+"\n";
+        }
+
+        if(courier.getCourierCompany()!=null) {
+            body += "Courier Company: "+courier.getCourierCompany()+"\n";
+        }
+        return body;
+    }
+
+    public String updateCourierMailBody(Courier courier) {
+        String body = "Your courier has been delivered.\n\n";
+        body += "Courier details:\n\n";
+        if(courier.getOwner()!=null) {
+            body += "Owner: "+courier.getOwner()+"\n";
+        }
+
+        if(courier.getArrivalDate() !=null) {
+            body += "Arrival Date: "+courier.getArrivalDate()+"\n";
+        }
+
+        if(courier.getArrivalTime()!=null) {
+            body += "Arrival Time: "+courier.getArrivalTime()+"\n";
+        }
+
+        if(courier.getOwnerRollNo()!=null) {
+            body += "Owner RollNo: "+courier.getOwnerRollNo()+"\n";
+        }
+
+        if(courier.getCourierCompany()!=null) {
+            body += "Courier Company: "+courier.getCourierCompany()+"\n";
+        }
+
+        if(courier.getReceiverName()!=null) {
+            body += "Receiver Name: "+courier.getReceiverName()+"\n";
+        }
+
+        if(courier.getReceiverRollNo()!=null) {
+            body += "Receiver RollNo: "+courier.getReceiverRollNo()+"\n";
+        }
+
+        if(courier.getDeliverDate()!=null) {
+            body += "Deliver Date: "+courier.getDeliverDate()+"\n";
+        }
+
+        if(courier.getDeliverTime()!=null) {
+            body += "Deliver Time: "+courier.getDeliverTime()+"\n";
+        }
+        return body;
     }
 
     public Courier updateCourier(Courier courier) {
@@ -65,8 +147,14 @@ public class CourierService {
             if(courier.getStatus()!=null) {
                 cour.setStatus(courier.getStatus());
             }
+            String uname = cour.getOwnerRollNo();
+            if(uname!=null) {
+                User user = userDao.findByUserName(uname);
+                emailSenderService.sendSimpleEmail(user.getMailID(),
+                        updateCourierMailBody(cour),
+                        "Courier Delivered!");
+            }
             return courierDao.save(cour);
-
         }
         return courierDao.save(courier);
     }

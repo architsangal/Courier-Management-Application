@@ -1,5 +1,7 @@
 package com.iiitb.CourierManagement.entity;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -23,6 +25,7 @@ public class User {
     )
     private Set<Role> role;
 
+    @NotNull
     @Column(unique=true)
     private String mailID;
     private String status;
