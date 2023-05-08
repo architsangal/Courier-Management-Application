@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 @Service
@@ -50,6 +51,9 @@ public class UserService {
         adminUser.setUserPassword(getEncodedPassword("admin@pass"));
         adminUser.setUserFirstName("admin");
         adminUser.setUserLastName("admin");
+
+        adminUser.setStatus("VERIFIED");
+
         Set<Role> adminRoles = new HashSet<>();
         adminRoles.add(adminRole);
         adminUser.setRole(adminRoles);
@@ -60,10 +64,25 @@ public class UserService {
         user.setUserPassword(getEncodedPassword("aditya@123"));
         user.setUserFirstName("Aditya");
         user.setUserLastName("Vardhan");
+
+        user.setStatus("NOT_VERIFIED");
+        user.setMailID("aditya.vardhan@iiitb.ac.in");
+        user.setOTP(getEncodedSixDigitOTP());
+
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(userRole);
         user.setRole(userRoles);
         userDao.save(user);
+    }
+
+    public String getEncodedSixDigitOTP() {
+        // It will generate 6 digit random Number.
+        // from 0 to 999999
+        Random rnd = new Random();
+        int number = rnd.nextInt(999999);
+
+        // this will convert any number sequence into 6 character.
+        return passwordEncoder.encode(String.format("%06d", number));
     }
 
     public String getEncodedPassword(String password) {
