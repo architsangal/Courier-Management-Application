@@ -50,7 +50,7 @@
     #   when: not app_stat.stat.exists
 
     - name: Check Minikube status
-      become: true
+      # become: true
       command: minikube status
       register: minikube_status
       changed_when: false
