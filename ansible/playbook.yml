@@ -1,83 +1,110 @@
-# https://www.digitalocean.com/community/tutorials/how-to-use-ansible-to-install-and-set-up-docker-on-ubuntu-20-04
 ---
 - name: Installing Dependencies
-  hosts: ubuntu
+  hosts: localhost
   tasks:
-    - name: Install OpenJDK 8
-      apt:
-        name: openjdk-8-jdk
+    - name: Install OpenJDK 17
+      homebrew:
+        name: openjdk@17
         state: present
-    - name: Install aptitude
-      apt:
-        name: aptitude
-        state: latest
-        update_cache: true
-    - name: Install required system packages
-      apt:
-        pkg:
-          - apt-transport-https
-          - ca-certificates
-          - curl
-          - software-properties-common
-          - python3-pip
-          - virtualenv
-          - python3-setuptools
-        state: latest
-        update_cache: true
-    - name: Add Docker GPG apt Key
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
-    - name: Add Docker Repository
-      apt_repository:
-        repo: deb https://download.docker.com/linux/ubuntu focal stable
-        state: present
-    - name: Update apt and install docker-ce
-      apt:
-        name: docker-ce
-        state: latest
-        update_cache: true
-    - name: Install Docker Module for Python
-      pip:
-        name: docker
-      
-    # No required always there with installation of docker
+    # Not Required
+    # - name: Install required system packages
+    #   homebrew:
+    #     name:
+    #       - apt-transport-https
+    #       - ca-certificates
+    #       - curl
+    #       - python3
+    #       - python3-pip
+    #       - python3-setuptools
+    #     state: latest
+    # - name: Add Docker GPG apt Key
+    #   shell: curl -fsSL https://download.docker.com/mac/stable/gpg | sudo gpg --import -
+    # - name: Add Docker Repository
+    #   shell: sudo sh -c 'echo "deb [arch=amd64] https://download.docker.com/mac/stable/$(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list'
+    # - name: Update apt and install docker-ce
+    #   homebrew:
+    #     name: docker
+    #     state: latest
+    # - name: Install Docker Module for Python
+    #   pip:
+    #     name: docker
+
     # - name: Docker sudo setup
-    #   command: sudo groupadd docker
-    - name: Docker sudo setup
-      command: sudo usermod -aG docker $USER
-    # No required always there with installation of docker
-    # - name: Docker sudo setup
-    #   command: newgrp docker
-    
-    - name: Check if minikube binary file exists
-      stat:
-        path: "./minikube-linux-amd64"
-      register: file_stat
-    - name: Download file if it doesn't exist
-      get_url:
-        url: "https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64"
-        dest: "./"
-      when: not file_stat.stat.exists
-    - name: Check if Minikube is installed
-      stat:
-        path: "/usr/local/bin/minikube"
-      register: app_stat
-    - name: Install Minikube
-      command: sudo install minikube-linux-amd64 /usr/local/bin/minikube
-      when: not app_stat.stat.exists
+    #   command: sudo dscl . append /Groups/docker GroupMembership $(whoami)
+
+    # - name: Check if minikube binary file exists
+    #   stat:
+    #     path: "./minikube-darwin-amd64"
+    #   register: file_stat
+    # - name: Download file if it doesn't exist
+    #   get_url:
+    #     url: "https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-amd64"
+    #     dest: "./"
+    #   when: not file_stat.stat.exists
+    # - name: Check if Minikube is installed
+    #   stat:
+    #     path: "/usr/local/bin/minikube"
+    #   register: app_stat
+    # - name: Install Minikube
+    #   command: sudo mv minikube-darwin-amd64 /usr/local/bin/minikube && sudo chmod +x /usr/local/bin/minikube
+    #   when: not app_stat.stat.exists
 
     - name: Check Minikube status
-      become: false
       command: minikube status
       register: minikube_status
       changed_when: false
       failed_when: false
-    # - name: Display Minikube status
-    #   debug:
-    #     var: minikube_status.stdout_lines
     - name: Start Minikube
       become: false
-      command: minikube start --cpus 4 --memory 8192 
+      command: minikube start --cpus 4 --memory 8192
       when: "'Running' not in minikube_status.stdout"
+
+    - name: Applying K8s Command in Repository
+      shell: |
+        cd ./../kubernetesnew/
+        kubectl apply -f .
+      register: applying_K8s
+      changed_when: false
+      failed_when: false
+    - name: Debugging Logs
+      debug:
+        var: applying_K8s
+    - name: Checking the Helm Repos
+      command: helm repo list
+      register: helm_repo_list
+      changed_when: false
+      failed_when: false
+    - name: Adding Prometheus For Monitoring If not Available In Helm Repo
+      become: false
+      command: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+      when: "'prometheus-community' not in helm_repo_list.stdout"
+    - name: Adding Stable Repo In Helm Repo If Not Available
+      become: false
+      command: helm repo add stable https://charts.helm.sh/stable
+      when: "'stable' not in helm_repo_list.stdout"
+    # We want to have a stable environment so we will not run this command
+    # as it may have unintended consequences
+    # - name: Updating Helm Repos
+    #   become: false
+    #   command: helm repo update
+    - name: Getting Info about the pods running
+      command: kubectl get all
+      register: get_all
+      changed_when: false
+      failed_when: false
+    - name: Uploading Prometheus Charts to Kubernetes if not there
+      become: false
+      command: helm install prometheus prometheus-community/kube-prometheus-stack
+      when: "'prometheus' not in helm_repo_list.stdout"
+    # May Be useful if we want a more stable environment
+    # - name: Uploading Prometheus Charts Fixed Version to Kubernetes if needed
+    #   become: false
+    #   command: helm install prometheus prometheus-community/kube-prometheus-stack --version "9.4.1"
+    #   when: "'prometheus' not in helm_repo_list.stdout"
     
+    - name: Port-Forwarding Prometheus Grafana Deployment
+      command: kubectl port-forward deployment/prometheus-grafana 3000
+      async: 31536000
+      poll: 0
+      ignore_errors: true
+      
