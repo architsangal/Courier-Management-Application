@@ -47,6 +47,35 @@ public class UserService {
         return userDao.save(user);
     }
 
+    public User forgotPassOTP(String mailId) {
+        User user = userDao.findByMailID(mailId);
+        if(user.getStatus().equals("NOT_VERIFIED")){
+            return null;
+        }
+        String OTP = getSixDigitOTP();
+        emailSenderService
+                .sendSimpleEmail(
+                        user.getMailID(),
+                        "Your forgot password OTP for IIIT-B couriers app is " + OTP,
+                        "Forgot password OTP (IIIT-B couriers)");
+        user.setOTP(OTP);
+        userDao.save(user);
+        return user;
+    }
+
+    public User resetPassword(User u) {
+        User user = userDao.findByMailID(u.getMailID());
+        if(user.getStatus().equals("NOT_VERIFIED")){
+            return null;
+        }
+        if(!user.getOTP().equals(u.getOTP())) {
+            return null;
+        }
+        user.setUserPassword(passwordEncoder.encode(u.getUserPassword()));
+        userDao.save(user);
+        return user;
+    }
+
     public User verifyMail(String mailID, String OTP) {
         User user = userDao.findByMailID(mailID);
         if(user.getStatus().equals("VERIFIED")) {

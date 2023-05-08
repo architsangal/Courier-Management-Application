@@ -44,4 +44,16 @@ public class UserController {
         return u;
     }
 
+    @PostMapping({"/forgotPasswordOTP"})
+    public User forgotPasswordOTP(@RequestParam String mailId) {
+        User u = userService.forgotPassOTP(mailId);
+        return u;
+    }
+
+    @PostMapping({"/resetPassword"})
+    public User resetPassword(@RequestBody User user) {
+        User u = userService.resetPassword(user);
+        return u;
+    }
+
 }
