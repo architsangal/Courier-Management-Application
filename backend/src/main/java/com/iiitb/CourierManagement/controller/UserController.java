@@ -13,6 +13,9 @@ import javax.annotation.PostConstruct;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 @CrossOrigin
 public class UserController {
@@ -24,9 +27,14 @@ public class UserController {
         userService.initRoleAndUser();
     }
 
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @PostMapping({"/registerNewUser"})
     public User registerNewUser(@RequestBody User user) {
-        return userService.registerNewUser(user);
+        logger.info("[TYPE] incoming"+" [METHOD] POST"+ " [API_NAME] registerNewUser"+ " [CALLER] "+user.getUserName()+ " [STATUS] ACCEPT");
+        User u = userService.registerNewUser(user);
+        logger.info("[TYPE] outgoing"+" [METHOD] POST"+ " [API_NAME] registerNewUser"+ " [CALLER] "+user.getUserName()+ " [STATUS] SUCCESS");
+        return u;
     }
 
 }
