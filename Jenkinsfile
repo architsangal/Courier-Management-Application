@@ -75,8 +75,8 @@ pipeline
         {
             steps
             {
-                sh 'ps'
-                sh 'echo $PATH'
+                sh 'whereis minikube'
+                sh 'echo $USER'
             }
         }
         stage('Ansible Deployment')
