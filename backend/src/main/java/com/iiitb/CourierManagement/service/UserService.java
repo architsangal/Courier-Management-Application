@@ -49,6 +49,9 @@ public class UserService {
 
     public User verifyMail(String mailID, String OTP) {
         User user = userDao.findByMailID(mailID);
+        if(user.getStatus().equals("VERIFIED")) {
+            return null;
+        }
         if(user.getOTP().equals(OTP)) {
             user.setStatus("VERIFIED");
             userDao.save(user);

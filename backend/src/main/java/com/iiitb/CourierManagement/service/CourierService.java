@@ -166,7 +166,11 @@ public class CourierService {
 
     public Set<Courier> getMyCouriers(String jwtToken) {
         String rollNo = jwtUtil.getUsernameFromToken(jwtToken);
-        return courierDao.findByOwnerRollNo(rollNo);
+        User user = userDao.findByUserName(rollNo);
+        if(user.getStatus().equals("NOT_VERIFIED")) {
+            return null;
+        }
+        return courierDao.findByOwnerRollNoContaining(rollNo);
     }
 
     public Set<Courier> getAllCouriers() {
@@ -178,8 +182,8 @@ public class CourierService {
     public Set<Courier> getCouriersByRollNo(String rollNo) {
         System.out.println(rollNo);
         Set<Courier> couriers = new HashSet<>();
-        System.out.println(courierDao.findByOwnerRollNo(rollNo));
-        return courierDao.findByOwnerRollNo(rollNo);
+        System.out.println(courierDao.findByOwnerRollNoContaining(rollNo));
+        return courierDao.findByOwnerRollNoContaining(rollNo);
     }
 
     public Set<Courier> getCouriersByName(String name) {

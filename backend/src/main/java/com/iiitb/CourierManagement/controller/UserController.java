@@ -27,6 +27,7 @@ public class UserController {
         userService.initRoleAndUser();
     }
 
+
     private Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping({"/registerNewUser"})
