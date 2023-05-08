@@ -8,6 +8,7 @@ pipeline
     agent any
     environment
     {
+        PATH = "/usr/local/bin/minikube:${PATH}"
         registry = "architsangal/speminiproject"
         registryCredential = "dockerhub"
         dockerImage = ""
@@ -74,6 +75,7 @@ pipeline
         {
             steps
             {
+
                 sh 'echo $PATH'
             }
         }
