@@ -70,94 +70,17 @@ pipeline
                 }
             }
         }
-        // stage('Build Code')
-        // {
-        //     steps
-        //     {
-        //         dir("src/calculator/")
-        //         {
-        //             withMaven(options: [
-        //                 openTasksPublisher(disabled: true), 
-        //                 dependenciesFingerprintPublisher(disabled: true), 
-        //                 artifactsPublisher(disabled: true), 
-        //                 //junitPublisher(disabled: true), 
-        //                 jgivenPublisher(disabled: true), 
-        //                 invokerPublisher(disabled: true), 
-        //                 findbugsPublisher(disabled: true),
-        //                 concordionPublisher(disabled: true), 
-        //                 pipelineGraphPublisher(disabled: true)
-        //                 ]
-        //             )
-        //             {
-        //                 // TODO uncomment this
-        //                 sh "mvn clean"
-        //                 //sh "mvn validate"
-        //                 sh "mvn compile"
-        //             }                    
-        //         }
-        //     }
-        // }
-        // stage('Test Code')
-        // {
-        //     steps
-        //     {
-        //         dir("src/calculator/")
-        //         {
-        //             withMaven(options: [
-        //                 openTasksPublisher(disabled: true), 
-        //                 dependenciesFingerprintPublisher(disabled: true), 
-        //                 artifactsPublisher(disabled: true), 
-        //                 //junitPublisher(disabled: true), 
-        //                 jgivenPublisher(disabled: true), 
-        //                 invokerPublisher(disabled: true), 
-        //                 findbugsPublisher(disabled: true),
-        //                 concordionPublisher(disabled: true), 
-        //                 pipelineGraphPublisher(disabled: true)
-        //                 ]
-        //             )
-        //             {
-        //                 // TODO uncomment this
-        //                 sh "mvn test"
-        //                 //sh "mvn package"
-        //                 //sh "mvn verify"
-        //             }                    
-        //         }
-        //     }
-        // }
-        // stage('Package Code')
-        // {
-        //     steps
-        //     {
-        //         dir("src/calculator/")
-        //         {
-        //             withMaven(options: [
-        //                 openTasksPublisher(disabled: true), 
-        //                 dependenciesFingerprintPublisher(disabled: true), 
-        //                 artifactsPublisher(disabled: true), 
-        //                 //junitPublisher(disabled: true), 
-        //                 jgivenPublisher(disabled: true), 
-        //                 invokerPublisher(disabled: true), 
-        //                 findbugsPublisher(disabled: true),
-        //                 concordionPublisher(disabled: true), 
-        //                 pipelineGraphPublisher(disabled: true)
-        //                 ]
-        //             )
-        //             {
-        //                 // TODO uncomment this
-        //                 sh "mvn package"
-        //                 //sh "mvn verify"
-        //             }                    
-        //         }
-        //     }
-        // }
         stage('Ansible Deployment')
         {
             steps
             {
-                ansiblePlaybook colorized: true,
-                installation: 'Ansible',
-                inventory: 'inventory',
-                playbook: 'playbook.yml'
+                dir('./ansible')
+                {
+                    ansiblePlaybook colorized: true,
+                    installation: 'Ansible',
+                    inventory: 'inventory',
+                    playbook: 'playbook.yml'
+                }
             }
         }
     }
