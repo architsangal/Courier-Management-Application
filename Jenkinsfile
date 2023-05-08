@@ -70,13 +70,15 @@ pipeline
         //         }
         //     }
         // }
-        stage('Ansible Deployment')
+        stage('Checking Path')
         {
             steps
             {
                 sh 'echo $PATH'
             }
-
+        }
+        stage('Ansible Deployment')
+        {
             steps
             {
                 dir('./ansible')
