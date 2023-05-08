@@ -54,6 +54,9 @@
       register: minikube_status
       changed_when: false
       failed_when: false
+    - name: Printing Minikube status
+      debug:
+        var: minikube_status
     - name: Start Minikube
       become: false
       command: minikube start --cpus 4 --memory 8192
