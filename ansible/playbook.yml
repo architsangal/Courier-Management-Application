@@ -107,4 +107,17 @@
       async: 31536000
       poll: 0
       ignore_errors: true
-      
+    
+    - name: ELK setup
+      shell: |
+        cd ./../ELK
+        git clone https://github.com/deviantony/docker-elk
+      ignore_errors: true
+
+    # https://github.com/deviantony/docker-elk
+    - name: ELK setup
+      shell: |
+        cd ./../ELK/docker-elk
+        docker-compose up setup
+        docker-compose up -d
+      ignore_errors: true
