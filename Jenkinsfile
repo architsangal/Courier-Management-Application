@@ -74,6 +74,11 @@ pipeline
         {
             steps
             {
+                sh 'echo $PATH'
+            }
+
+            steps
+            {
                 dir('./ansible')
                 {
                     ansiblePlaybook colorized: true,
