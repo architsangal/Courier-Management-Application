@@ -75,7 +75,7 @@ pipeline
         {
             steps
             {
-                sh 'echo $USER'
+                sh 'ps'
                 sh 'echo $PATH'
             }
         }
