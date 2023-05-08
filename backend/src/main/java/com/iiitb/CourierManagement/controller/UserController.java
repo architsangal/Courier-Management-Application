@@ -37,4 +37,10 @@ public class UserController {
         return u;
     }
 
+    @PostMapping({"/verifyMail"})
+    public User verifyMail(@RequestParam String mailId, @RequestParam String OTP) {
+        User u = userService.verifyMail(mailId, OTP);
+        return u;
+    }
+
 }

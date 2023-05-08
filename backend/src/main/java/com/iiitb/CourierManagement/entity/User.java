@@ -23,6 +23,7 @@ public class User {
     )
     private Set<Role> role;
 
+    @Column(unique=true)
     private String mailID;
     private String status;
     private String OTP;

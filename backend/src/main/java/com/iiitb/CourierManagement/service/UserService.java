@@ -47,6 +47,16 @@ public class UserService {
         return userDao.save(user);
     }
 
+    public User verifyMail(String mailID, String OTP) {
+        User user = userDao.findByMailID(mailID);
+        if(user.getOTP().equals(OTP)) {
+            user.setStatus("VERIFIED");
+            userDao.save(user);
+            return user;
+        }
+        return null;
+    }
+
     public void initRoleAndUser() {
 
         Role adminRole = new Role();
