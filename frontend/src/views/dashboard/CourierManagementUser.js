@@ -92,8 +92,9 @@ const Dashboard = () => {
       .then((res) =>
       {
         const data = res.data.sort((a, b) => {return b.courierID - a.courierID;});
-        console.log(data);
-        setTableExample(data)
+        const filteredArray = data.filter((obj) => obj.ownerRollNo === JSON.parse(localStorage.getItem('details')).username);
+        console.log(filteredArray);
+        setTableExample(filteredArray)
       })
       // Catch errors if any
       .catch((err) => { });
