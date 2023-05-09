@@ -43,3 +43,8 @@ Logs
 kubectl cp default/springboot-9594b4f67-svq5k:logs/ ~/logs/
 kubectl cp default/<name of the pod>:logs/ ~/logs/ # (Don't put it like pod/<name of the pod>)
 ```
+
+To exec into the pod
+```
+kubectl exec -it pod/springboot-9594b4f67-svq5k bash
+```

@@ -136,8 +136,11 @@
       command: kubectl port-forward deployment/prometheus-grafana 3000
       async: 31536000
       poll: 0
+      register: progra
       ignore_errors: true
-    
+    - name: Debugging Logs
+      debug:
+        var: progra
     - name: ELK setup
       shell: |
         cd ./../ELK
