@@ -57,3 +57,7 @@ To filter the custom logs:
 ```
 cat controllerLog.log | grep CALLER >> ~/Downloads/a.log
 ```
+
+ELK Log
+- http://localhost:5601/app/lens#/?_g=(filters:!(),refreshInterval:(pause:!t,value:60000),time:(from:'2023-05-08T18:39:23.507Z',to:'2023-05-09T16:53:50.347Z'))
+- http://localhost:5601/app/lens#/?_g=(filters:!(),refreshInterval:(pause:!t,value:60000),time:(from:'2023-05-08T18:39:23.507Z',to:'2023-05-09T16:53:50.347Z'))
