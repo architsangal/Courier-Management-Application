@@ -164,7 +164,7 @@ public class CourierService {
             }
             return courierDao.save(cour);
         }
-        return courierDao.save(courier);
+        return null;
     }
 
     public void deleteCourier(Courier courier) {
