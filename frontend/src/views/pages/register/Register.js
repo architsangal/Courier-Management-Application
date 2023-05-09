@@ -98,7 +98,6 @@ const Register = () => {
     })
       .then((res) => {
         console.log(res);       
-        console.log(h) 
         if (res.status == "200") {
           localStorage.setItem('register', JSON.stringify({ username: username,email: email}))
           setShowAlertSuccess(true);
