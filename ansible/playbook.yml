@@ -92,6 +92,7 @@
     - name: Applying K8s Command in Repository
       shell: |
         cd ./../kubernetesnew/
+        kubectl delete -f .
         kubectl apply -f .
       register: applying_K8s
       changed_when: false
