@@ -26,6 +26,10 @@ public class CourierService {
     @Autowired
     private UserDao userDao;
 
+    public CourierService(CourierDao courierDao, UserDao userDao) {
+        this.courierDao = courierDao;
+        this.userDao = userDao;
+    }
 
     public Courier addCourier(Courier courier) {
         courier.setStatus("ACTIVE");
@@ -160,7 +164,7 @@ public class CourierService {
             }
             return courierDao.save(cour);
         }
-        return courierDao.save(courier);
+        return null;
     }
 
     public void deleteCourier(Courier courier) {
