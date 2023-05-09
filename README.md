@@ -1,6 +1,7 @@
 # Courier-Management-Application
 SPE Major Project
 
+Basic Commands to run manually:
 ```
 start docker
 minikube start
