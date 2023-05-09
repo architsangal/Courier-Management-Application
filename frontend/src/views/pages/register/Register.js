@@ -17,8 +17,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { CAlert } from "@coreui/react";
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [showAlertSuccess, setShowAlertSuccess] = useState(false);
   const handleShowAlertSuccess = (event) => {
     setShowAlertSuccess(false);
@@ -28,6 +31,11 @@ const Register = () => {
   const handleShowAlertFail = (event) => {
     setShowAlertFail(false);
   };
+
+  const [showAlertEmpty, setShowAlertEmpty] = useState(false);
+  // const handleShowAlertEmpty = (event) => {
+  //   setShowAlertEmpty(false);
+  // };
 
   const [username, setUserName] = useState("");
   const handleUserName = (event) => {
@@ -49,19 +57,36 @@ const Register = () => {
     setPassword(event.target.value);
   };
 
+  const [email, setEmail] = useState("");
+  const handleEmail = (event) => {
+    setEmail(event.target.value);
+  };
+
+
   const clearAllEntries = () => {
     setUserName("");
     setFirstName("");
     setLastName("");
     setPassword("");
+    setEmail("");
   };
 
   const submitted = (event) => {
+    if(username === "" || firstName === "" || lastName === "" || password === "" || email === "")
+    {
+      setShowAlertEmpty(true)
+      setShowAlertFail(false)
+      setShowAlertSuccess(false)
+      return
+    }
+    
     let formData = new FormData();
     formData.append("userName", username);
     formData.append("userFirstName", firstName);
     formData.append("userLastName", lastName);
     formData.append("userPassword", password);
+    formData.append("mailID", email);
+
     axios({
       url: process.env.REACT_APP_BACKEND_API_URL+"registerNewUser",
       method: "POST",
@@ -72,14 +97,25 @@ const Register = () => {
       data: formData,
     })
       .then((res) => {
-        console.log(res);
+        console.log(res);       
+        console.log(h) 
         if (res.status == "200") {
+          localStorage.setItem('register', JSON.stringify({ username: username,email: email}))
           setShowAlertSuccess(true);
+          setShowAlertEmpty(false)
+          setShowAlertFail(false)
+          navigate('/otp');
         } else {
           setShowAlertFail(true);
+          setShowAlertSuccess(false);
+          setShowAlertEmpty(false)
         }
       })
-      .catch((err) => {});
+      .catch((err) => {
+        setShowAlertFail(true);
+        setShowAlertSuccess(false);
+        setShowAlertEmpty(false)
+    });
 
     clearAllEntries();
   };
@@ -93,7 +129,17 @@ const Register = () => {
               <CCardBody className="p-4">
                 <div className="mt-2">
                   <CAlert
-                    dismissible={true}
+                    dismissible={false}
+                    color="danger"
+                    visible={showAlertEmpty}
+                  >
+                    None of the Fields Below Can Be Empty!
+                  </CAlert>
+                </div>
+
+                <div className="mt-2">
+                  <CAlert
+                    dismissible={false}
                     color="success"
                     visible={showAlertSuccess}
                   >
@@ -103,7 +149,7 @@ const Register = () => {
 
                 <div className="mt-2">
                   <CAlert
-                    dismissible={true}
+                    dismissible={false}
                     color="danger"
                     visible={showAlertFail}
                   >
@@ -148,6 +194,17 @@ const Register = () => {
                       placeholder="Last Name"
                       value={lastName}
                       onChange={handleLastName}
+                    />
+                  </CInputGroup>
+
+                  <CInputGroup className="mb-3">
+                    <CInputGroupText>
+                      <CIcon icon={cilUser} />
+                    </CInputGroupText>
+                    <CFormInput
+                      placeholder="Email"
+                      value={email}
+                      onChange={handleEmail}
                     />
                   </CInputGroup>
 

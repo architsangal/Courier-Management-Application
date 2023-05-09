@@ -42,7 +42,6 @@ const Login = () => {
   };
 
   const submitted = () => {
-    console.log(process.env.REACT_APP_BACKEND_API_URL);
     let formData = new FormData();
     formData.append("userName", username);
     formData.append("userPassword", password);
@@ -56,11 +55,10 @@ const Login = () => {
       data: formData,
     })
       .then((res) => {
-        // console.log();
+        
         localStorage.setItem('details', JSON.stringify({ username: username,token: res.data.jwtToken, role: res.data.user.role[0].roleName}))
         const details = JSON.parse(localStorage.getItem('details'))
-        // console.log(details.username);
-        // console.log(details.token);
+        
         console.log(details.role);
         if(details.role === 'Admin')
           navigate('/dashboardAdmin')
@@ -130,19 +128,28 @@ const Login = () => {
                     </CInputGroup>
 
                     <CCol xs={6}>
-                      <CButton type="submit" color="primary" className="px-4">
+                      <CButton type="submit" color="primary" className="px-4 mb-3">
                         Login
                       </CButton>
                     </CCol>
-                  
-                    <div className="right-button">
-                    <Link to="/register">
+
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      <Link to="/forgotpass">
+                      <CButton color="link">
+                        Forgot Password?
+                      </CButton>
+                      </Link>
+                      <div
+                        style={{
+                          flex: "1 1 auto",
+                        }}
+                      ></div>
+                      <Link to="/register">
                       <CButton color="link">
                         New Registration?
                       </CButton>
                       </Link>
-                    </div>
-                  
+                    </div>                  
                   </CForm>
                 </CCardBody>
               </CCard>
