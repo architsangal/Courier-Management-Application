@@ -61,12 +61,18 @@
       become: false
       command: minikube start --cpus 4 --memory 8192
       when: "'Running' not in minikube_status.stdout"
-    
-    - name: Transfer file from ServerA to ServerB
+    - name: Installing Addons
+      become: false
+      command: minikube addons enable ingress
+      ignore_errors: true
+    - name: Installing Addons
+      become: false
+      command: minikube addons enable metrics-server
+      ignore_errors: true
+    - name: Transfer file from controller
       synchronize:
         src: /Users/architsangal/Data/Projects/secretFiles/configFileAndSecrets.yaml
         dest: ./
-      # delegate_to: ServerA
     - name: LS
       shell: |
         ls
@@ -101,11 +107,11 @@
     - name: Adding Prometheus For Monitoring If not Available In Helm Repo
       become: false
       command: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-      when: "'prometheus-community' not in helm_repo_list.stdout"
+      ignore_errors: true
     - name: Adding Stable Repo In Helm Repo If Not Available
       become: false
       command: helm repo add stable https://charts.helm.sh/stable
-      when: "'stable' not in helm_repo_list.stdout"
+      ignore_errors: true
     # We want to have a stable environment so we will not run this command
     # as it may have unintended consequences
     # - name: Updating Helm Repos
@@ -119,7 +125,7 @@
     - name: Uploading Prometheus Charts to Kubernetes if not there
       become: false
       command: helm install prometheus prometheus-community/kube-prometheus-stack
-      when: "'prometheus' not in helm_repo_list.stdout"
+      ignore_errors: true
     # May Be useful if we want a more stable environment
     # - name: Uploading Prometheus Charts Fixed Version to Kubernetes if needed
     #   become: false
