@@ -28,6 +28,11 @@ public class UserService {
     private EmailSenderService emailSenderService;
 
     public User registerNewUser(User user) {
+        User u = userDao.findByUserName(user.getUserName());
+        if(u!=null && u.getStatus()=="VERIFIED") {
+            u.setOTP("not_required");
+            return u;
+        }
         Role role = roleDao.findById("User").get();
         Set<Role> userRoles = new HashSet<>();
         userRoles.add(role);

@@ -34,6 +34,10 @@ public class UserController {
     public User registerNewUser(@RequestBody User user) {
         logger.info("[TYPE] incoming"+" [METHOD] POST"+ " [API_NAME] registerNewUser"+ " [CALLER] "+user.getUserName()+ " [STATUS] ACCEPT");
         User u = userService.registerNewUser(user);
+        if(!u.getOTP().equals("not_required")) {
+            u.setOTP(null);
+        }
+        u.setUserPassword(null);
         logger.info("[TYPE] outgoing"+" [METHOD] POST"+ " [API_NAME] registerNewUser"+ " [CALLER] "+user.getUserName()+ " [STATUS] SUCCESS");
         return u;
     }
@@ -47,6 +51,8 @@ public class UserController {
     @PostMapping({"/forgotPasswordOTP"})
     public User forgotPasswordOTP(@RequestParam String mailId) {
         User u = userService.forgotPassOTP(mailId);
+        u.setOTP(null);
+        u.setUserPassword(null);
         return u;
     }
 
