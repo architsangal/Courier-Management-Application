@@ -48,3 +48,8 @@ To exec into the pod
 ```
 kubectl exec -it pod/springboot-9594b4f67-svq5k bash
 ```
+
+To filter the custom logs:
+```
+cat controllerLog.log | grep CALLER >> ~/Downloads/a.log
+```
