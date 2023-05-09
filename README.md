@@ -15,8 +15,12 @@ mvn clean install
 docker build -t architsangal/courier_spring_boot:latest .
 docker push architsangal/courier_spring_boot:latest
 ```
+
+Accessing frontend and backend
+```
 - http://courier-management/temp/?#/login
 - http://springboot.com/api/
+```
 
 Prometheus Grafana
 http://localhost:3000/login
