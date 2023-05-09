@@ -37,3 +37,9 @@ GROK
 ```
 %{TIMESTAMP_ISO8601:timestamp} \[%{LOGLEVEL:level}\] %{DATA:class} \[%{DATA:thread}\] \[%{WORD:type}\] %{WORD:type_val} \[%{WORD:method}\] %{WORD:method_val} \[%{WORD:apiName}\] %{WORD:apiName_val} \[%{WORD:caller}\] %{WORD:caller_val} \[%{WORD:status}\] %{WORD:status_val}
 ```
+
+Logs
+```
+kubectl cp default/springboot-9594b4f67-svq5k:logs/ ~/logs/
+kubectl cp default/<name of the pod>:logs/ ~/logs/ # (Don't put it like pod/<name of the pod>)
+```
