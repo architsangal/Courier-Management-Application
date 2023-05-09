@@ -92,7 +92,7 @@ const Dashboard = () => {
       .then((res) =>
       {
         const data = res.data.sort((a, b) => {return b.courierID - a.courierID;});
-        const filteredArray = data.filter((obj) => obj.ownerRollNo === JSON.parse(localStorage.getItem('details')).username);
+        const filteredArray = data.filter((obj) => obj.ownerRollNo === JSON.parse(localStorage.getItem('details')).username || obj.ownerRollNo === "");
         console.log(filteredArray);
         setTableExample(filteredArray)
       })
