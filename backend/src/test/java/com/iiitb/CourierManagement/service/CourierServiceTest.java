@@ -29,18 +29,19 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class CourierServiceTest {
 
+    @InjectMocks
+    private CourierService courierService;
+
     @Mock
     private CourierDao courierDao;
 
     @Mock
     private UserDao userDao;
 
-    private CourierService courierService;
-
     @BeforeEach
     void setUp() {
-        courierService = new CourierService(courierDao, userDao);
-//        this.courierService = new CourierService();
+//        courierService = new CourierService(courierDao, userDao);
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
@@ -91,6 +92,7 @@ class CourierServiceTest {
         doReturn(Optional.of(cour)).when(courierDao).findById(1);
         when(courierDao.save(eq(cour))).thenReturn(c);
         Courier result = courierService.updateCourier(cour);
+//        System.out.println(result);
         assertEquals(result,c);
     }
 //
