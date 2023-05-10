@@ -87,13 +87,11 @@ class CourierServiceTest {
         c.setDeliverTime(Time.valueOf("22:26:00"));
         c.setStatus("COMPLETE");
 
-//        User u = null;
 
-//        Optional<Courier> c = Optional.of(courier);
         doReturn(Optional.of(cour)).when(courierDao).findById(1);
-
+        when(courierDao.save(eq(cour))).thenReturn(c);
         Courier result = courierService.updateCourier(cour);
-//        Mockito.verify(courierDao).save(c);
+        assertEquals(result,c);
     }
 //
 //    @Test
