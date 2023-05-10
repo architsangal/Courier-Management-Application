@@ -3,23 +3,17 @@ package com.iiitb.CourierManagement.service;
 import com.iiitb.CourierManagement.dao.CourierDao;
 import com.iiitb.CourierManagement.dao.UserDao;
 import com.iiitb.CourierManagement.entity.Courier;
-import com.iiitb.CourierManagement.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.util.Optional;
-
-import static org.mockito.BDDMockito.given;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -95,20 +89,4 @@ class CourierServiceTest {
 //        System.out.println(result);
         assertEquals(result,c);
     }
-//
-//    @Test
-//    void deleteCourier() {
-//    }
-//
-//    @Test
-//    void getAllCouriers() {
-//    }
-//
-//    @Test
-//    void getCouriersByRollNo() {
-//    }
-//
-//    @Test
-//    void getCouriersByName() {
-//    }
 }

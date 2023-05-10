@@ -31,6 +31,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter{
     @Autowired
     private UserDetailsService jwtService;
 
+
+//    This method returns the AuthenticationManager bean,
+//    which is used by Spring Security to authenticate users.
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -38,6 +41,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter{
     }
 
 
+//    This method configures the security settings for the HTTP requests.
+//    1. It sets the allowed endpoints for unauthenticated requests
+//    2. disables CSRF protection,
+//    3. sets the authentication entry point,
+//    4. sets the session creation policy to stateless, and
+//    5. adds the JwtRequestFilter
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors();
@@ -59,6 +68,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter{
         return new BCryptPasswordEncoder();
     }
 
+
+//    This method configures the AuthenticationManagerBuilder
+//    to use the UserDetailsService and PasswordEncoder beans
+//    for authenticating users.
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.userDetailsService(jwtService).passwordEncoder(passwordEncoder());

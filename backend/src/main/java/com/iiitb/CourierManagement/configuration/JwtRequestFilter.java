@@ -18,8 +18,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-//The class extends the OncePerRequestFilter class from
-//Spring, which ensures that the filter is only executed once per request.
+
+//The filter is responsible for authenticating requests by extracting
+//the JWT from the Authorization header of the HTTP request and
+//validating it.
+//
+//The class extends the OncePerRequestFilter class from Spring,
+//which ensures that the filter is only executed once per request.
+//
+//The class is also annotated with @Component, indicating that
+//it is a Spring-managed component that can be injected into other
+//components using Spring's dependency injection mechanism.
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -28,6 +37,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtService jwtService;
+
+
+//    1. Get the Authorization header from the HTTP request.
+//
+//    2. Check if the JWT is present and starts with the prefix "Bearer ".
+//
+//    3. If the JWT is present and valid, extract the username from the
+//    token using the JwtUtil bean.
+//
+//    4. If the username is valid and the user is not already
+//    authenticated, load the user details from the JwtService bean.
+//
+//    5. If the JWT is valid for the user and has not expired,
+//    create a new UsernamePasswordAuthenticationToken object
+//    and set it in the SecurityContextHolder.
+//
+//    6. Call filterChain.doFilter() to continue processing the request.
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -64,5 +90,10 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
 
     }
+
+//    The SecurityContextHolder class is designed to be used
+//    as a central repository for storing and retrieving the
+//    SecurityContext object, which represents the security-related
+//    information for the current user.
 
 }

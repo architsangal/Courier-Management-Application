@@ -15,6 +15,10 @@ public class CorsConfiguration {
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
+//        addCorsMappings() method adds a CORS mapping for all endpoints
+//        in the application by calling the addMapping() method of the
+//        CorsRegistry object. The addMapping() method specifies the URL
+//        pattern to which the CORS configuration should apply.
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
